@@ -1,4 +1,4 @@
-import Controller from "../../bases/Controller";
+import Controller from "../../utils/Controller";
 import View from "./view";
 import Model from "./model";
 
@@ -13,7 +13,9 @@ export default class SpinnerButton extends Controller {
 		this.view.element.addEventListener("click", () => {
 			if (!this.model.isLoading) {
 				this.model.isLoading = true;
-				this.view.setLoadingForTime(3).then(() => (this.model.isLoading = false));
+				this.view
+					.setLoadingForTime(3)
+					.then(() => (this.model.isLoading = false));
 			}
 		});
 	}

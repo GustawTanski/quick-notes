@@ -1,4 +1,4 @@
-import Controller from "../../bases/Controller";
+import Controller from "../../utils/Controller";
 import Model from "./model";
 import View from "./view";
 
