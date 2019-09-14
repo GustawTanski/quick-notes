@@ -1,10 +1,15 @@
-import express = require("express");
+import express, { Application } from "express";
+import mongoose from "mongoose";
+import uri from "./dbAdminData";
 
-const app = express();
+const app: Application = express();
 
-const PORT: number = Number(process.env.PORT) || 5000;
+const PORT: number = Number(process.env.PORT) || 5000
 
 app.listen(PORT, () => {
     console.log(`Listening on ${PORT} port...`)
-})
 
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => console.log("Connected to database..."))
+        .catch(console.error);
+});
