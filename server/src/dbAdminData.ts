@@ -3,7 +3,7 @@
 const user: string = "admin";
 const password: string = "!SuperMocneHasloNaCoderscamp231!";
 
-const url: string = "cluster0-nsddk.gcp.mongodb.net/test";
+const url: string = "cluster0-nsddk.gcp.mongodb.net/quick-notes";
 const uri: string = `mongodb+srv://${user}:${password}@${url}?retryWrites=true&w=majority`;
 
 export default uri;
