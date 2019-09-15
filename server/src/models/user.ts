@@ -8,7 +8,7 @@ export interface IUser extends Document {
     password: string;
     isConfirmed?: boolean;
     resetPasswordToken?: string;
-    resetPasswordExpiration?: Date;
+    accountConfirmationToken?: string;
 }
 
 const userSchema: Schema = new Schema({
@@ -16,7 +16,7 @@ const userSchema: Schema = new Schema({
     password: { type: String, required: true, minlength: 5, maxlength: 1024 },
     isConfirmed: { type: Boolean, default: false },
     resetPasswordToken: String,
-    resetPasswordExpiration: Date
+    accountConfirmationToken: String
 });
 
 export function validate(user: IUser) {
