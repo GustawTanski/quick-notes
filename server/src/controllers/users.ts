@@ -8,7 +8,7 @@ export const registerUser = async (req: Request, res: Response): Promise<Respons
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let user: IUser = await User.findOne({ email: req.body.email }) as IUser;
+    let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send("User with this e-mail address already exists.");
     
     user = new User({
@@ -24,7 +24,7 @@ export const loginUser = async (req: Request, res: Response): Promise<Response> 
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let user: IUser = await User.findOne({ email: req.body.email }) as IUser;
+    let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(401).send("User with this e-mail address doesn't exist.");
 
     const isPasswordCorrect: boolean = await bcryptjs.compare(req.body.password, user.password);
