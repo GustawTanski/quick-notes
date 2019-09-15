@@ -7,10 +7,10 @@ export default function auth(req: Request, res: Response, next: NextFunction) {
 
 	if (token && typeof token == "string") {
         jwt.verify(token, key, err => {
-            if (err) return res.status(401).json({ success: false, message: "Token is invalid" });
+            if (err) return res.status(401).send("Token is invalid");
             else next();
         });
 	} else {
-		return res.status(401).json({ success: false, message: "Auth token has not been supplied." });
+		return res.status(401).send("Auth token has not been supplied.");
 	}
 };
