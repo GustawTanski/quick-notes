@@ -1,4 +1,4 @@
-import User, { validate, IUser } from "../models/User";
+import User, { validate } from "../models/User";
 import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -33,4 +33,12 @@ export const loginUser = async (req: Request, res: Response): Promise<Response> 
         res.header("x-auth-token", jwt.sign({ email: user.email }, key));
         return res.status(200).send("Logged in successfuly.");
     } else return res.status(400).send("Incorrect password.");
+}
+
+export const sendRecoveryMail = (req: Request, res: Response) => {
+    // TODO:: implement
+}
+
+export const updateUserPassword = (req: Request, res: Response) => {
+    // TODO:: implement
 }

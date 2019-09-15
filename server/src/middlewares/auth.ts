@@ -5,7 +5,7 @@ import key from "../privateKeyJWT";
 export default function auth(req: Request, res: Response, next: NextFunction) {
 	const token = req.headers["x-auth-token"];
 
-	if (token && !(token instanceof Array)) {
+	if (token && typeof token == "string") {
         jwt.verify(token, key, err => {
             if (err) return res.status(401).json({ success: false, message: "Token is invalid" });
             else next();

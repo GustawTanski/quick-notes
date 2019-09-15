@@ -6,11 +6,17 @@ import bcryptjs from "bcryptjs";
 export interface IUser extends Document {
     email: string;
     password: string;
+    isConfirmed?: boolean;
+    resetPasswordToken?: string;
+    resetPasswordExpiration?: Date;
 }
 
 const userSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 255 },
-	password: { type: String, required: true, minlength: 5, maxlength: 1024 }
+    password: { type: String, required: true, minlength: 5, maxlength: 1024 },
+    isConfirmed: { type: Boolean, default: false },
+    resetPasswordToken: String,
+    resetPasswordExpiration: Date
 });
 
 export function validate(user: IUser) {
@@ -20,6 +26,12 @@ export function validate(user: IUser) {
     };
 
     return Joi.validate(user, validationSchema);
+}
+
+export function validateEmail(email: IUser["email"]) {
+    const validationSchema = { email: Joi.string().min(5).max(255).required().email() };
+
+    return Joi.validate(email, validationSchema);
 }
 
 userSchema.pre<IUser>("save", async function(next: NextFunction) {

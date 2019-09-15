@@ -13,7 +13,21 @@ interface IUser extends Document {
 
 /*
     Register
-    Endpoint: "/"
+    Endpoint: "/register"
     Method: POST
     Request body should contain an object of type IUser
+*/
+
+/*
+    Password recovery
+    Step 1st - generate token and send e-mail
+    Endpoint: "/forgot/:email"
+    Method: GET
+*/
+
+/*
+    Password recovery
+    Step 2nd - verify token and update password
+    Endpoint: "/forgot/:token"
+    Method: PUT
 */
