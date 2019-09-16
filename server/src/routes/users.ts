@@ -6,6 +6,7 @@ const router: Router = express.Router();
 router.use(express.json());
 
 router.post("/register", controller.registerUser);
+router.post("/register/:token", controller.verifyEmail);
 router.post("/login", controller.loginUser);
 router.get("/forgot/:email", controller.sendRecoveryMail);
 router.put("/forgot/:token", controller.updateUserPassword);

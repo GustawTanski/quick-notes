@@ -9,7 +9,7 @@ export interface IUser extends Document {
     isConfirmed?: boolean;
     resetPasswordToken?: string;
     accountConfirmationToken?: string;
-}
+};
 
 const userSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 255 },
@@ -19,25 +19,25 @@ const userSchema: Schema = new Schema({
     accountConfirmationToken: String
 });
 
-export function validate(user: IUser) {
+export const validate = (user: IUser) => {
     const validationSchema = {
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(5).max(255).required()
     };
 
     return Joi.validate(user, validationSchema);
-}
+};
 
-export function validateEmail(email: IUser["email"]) {
+export const validateEmail = (email: IUser["email"]) => {
     const validationSchema = { email: Joi.string().min(5).max(255).required().email() };
 
     return Joi.validate(email, validationSchema);
-}
+};
 
 userSchema.pre<IUser>("save", async function(next: NextFunction) {
     this.password = await bcryptjs.hash(this.password, 10);
     next();
-})
+});
 
 const User = mongoose.model<IUser>('User', userSchema);
 export default User;

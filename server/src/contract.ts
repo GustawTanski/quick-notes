@@ -19,6 +19,12 @@ interface IUser extends Document {
 */
 
 /*
+    Email verification
+    Endpoint: "/register/:token"
+    Method: POST
+*/
+
+/*
     Password recovery
     Step 1st - generate token and send e-mail
     Endpoint: "/forgot/:email"

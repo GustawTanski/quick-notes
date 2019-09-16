@@ -18,7 +18,7 @@ app.use(auth);
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`)
 
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         .then(() => console.log("Connected to database..."))
         .catch(console.error);
 });
