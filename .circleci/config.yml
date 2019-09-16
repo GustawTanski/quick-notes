@@ -35,4 +35,4 @@ jobs:
 
       # run tests!
       - run: yarn run build
-      - run: surge --project dist/ https://quick-notes.surge.sh
+      - run: npx surge --project dist/ https://quick-notes.surge.sh
