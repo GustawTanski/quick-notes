@@ -3,17 +3,22 @@ import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import key from "../privateKeyJWT";
-import auth from "../mailgunCredentials";
+import auth from "../mailgunAuth";
 import crypto from "crypto-random-string";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
+import mg from "nodemailer-mailgun-transport";
 
 const userController = {
     async registerUser(req: Request, res: Response) {
         const { error } = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
     
-        await _saveNewUser(req, res);
+        _saveNewUser(req, res);
+    },
+
+    async renderVerification(req: Request, res: Response) {
+        // TODO:: implement
     },
 
     async verifyEmail(req: Request, res: Response) {
@@ -30,14 +35,18 @@ const userController = {
         await _verifyAndGenerateJWT(req, res, user);
     },
 
-    async passwordRecovery(req: Request, res: Response) {
+    async renderRecovery(req: Request, res: Response) {
+        // TODO:: implement
+    },
+
+    async passwordRecoveryEmail(req: Request, res: Response) {
         const { error } = validateEmail(req.params.email);
         if (error) return res.status(400).send(error.details[0].message);
     
         const user = await User.findOne({ email: req.params.email });
         if (!user) return res.status(401).send("User with this e-mail address doesn't exist.");
     
-        await _sendRecoveryMail(res, user);
+        _sendRecoveryMail(res, user);
     },
 
     async updateUserPassword(req: Request, res: Response) {
@@ -53,19 +62,20 @@ const _saveNewUser = async (req: Request, res: Response) => {
     
     user = new User({
         email: req.body.email,
-        password: req.body.password,
-        accountVerificationToken: crypto({ length: 40, type: "url-safe" })
+        password: req.body.password
     });
 
-    _sendVerificationEmail(res, user);
-
-    if (res.headersSent) return;
-
-    await user.save();
-    res.status(200).send(user);
+    try {
+        await _sendVerificationEmail(res, user);
+        await user.save();
+        res.status(200).send(`Successfuly registered user ${user.email}.`);
+    } catch(e) {
+        res.status(400).send("Unable to send a verification e-mail or to register a new user.");
+        console.log(e);
+    }
 };
 
-const _sendVerificationEmail = (res: Response, user: IUser) => {
+const _sendVerificationEmail = async (res: Response, user: IUser) => {
     const mailOptions = {
         from: "email@email.com",
         to: user.email,
@@ -76,7 +86,7 @@ const _sendVerificationEmail = (res: Response, user: IUser) => {
             `
     };
 
-    _sendMail(res, mailOptions);
+    return _sendMail(mailOptions);
 };
 
 const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) => {
@@ -90,16 +100,15 @@ const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) =
         .send("Logged in successfuly.");
 };
 
-const _sendRecoveryMail = (res: Response, user: IUser) => {
+const _sendRecoveryMail = async (res: Response, user: IUser) => {
     user.passwordRecoveryToken = crypto({ length: 40, type: "url-safe" });
 
     // TODO:: implement
 };
 
-const _sendMail = (res: Response, mailOptions: Mail.Options) => {
-    const transporter = nodemailer.createTransport({ service: "mailgun", auth });
-    
-    transporter.sendMail(mailOptions, err => {
-        if (err) res.status(400).send(err);
-    });
+const _sendMail = (mailOptions: Mail.Options) => {
+    const transporter = nodemailer.createTransport(mg(auth));
+    transporter.verify();
+
+    return transporter.sendMail(mailOptions);
 };

@@ -4,6 +4,26 @@ interface IUser extends Document {
 }
 
 /*
+    Register
+    Endpoint: "/register"
+    Method: POST
+    Request body should contain an object of type IUser
+*/
+
+/*
+    Email verification page
+    Endpoint: "/verify"
+    Method: GET
+    Renders a page containing information about verification
+*/
+
+/*
+    Email verification
+    Endpoint: "/verify/:token"
+    Method: POST
+*/
+
+/*
     Login
     Endpoint: "/login"
     Method: POST
@@ -12,16 +32,10 @@ interface IUser extends Document {
 */
 
 /*
-    Register
-    Endpoint: "/register"
-    Method: POST
-    Request body should contain an object of type IUser
-*/
-
-/*
-    Email verification
-    Endpoint: "/register/:token"
-    Method: POST
+    Password recovery page
+    Endpoint: "/forgot"
+    Method: GET
+    Renders a page containing a form for recovering a lost password
 */
 
 /*

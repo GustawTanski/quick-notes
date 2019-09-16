@@ -6,9 +6,11 @@ const router: Router = express.Router();
 router.use(express.json());
 
 router.post("/register", userController.registerUser);
-router.post("/register/:token", userController.verifyEmail);
+router.get("/verify", userController.renderVerification);
+router.post("/verify/:token", userController.verifyEmail);
 router.post("/login", userController.loginUser);
-router.get("/forgot/:email", userController.passwordRecovery);
+router.get("/forgot/", userController.renderRecovery);
+router.get("/forgot/:email", userController.passwordRecoveryEmail);
 router.put("/forgot/:token", userController.updateUserPassword);
 
 export default router;

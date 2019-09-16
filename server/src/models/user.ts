@@ -2,21 +2,22 @@ import { NextFunction } from "express";
 import mongoose, { Schema, Document } from "mongoose";
 import Joi from "joi";
 import bcryptjs from "bcryptjs";
+import crypto from "crypto-random-string";
 
 export interface IUser extends Document {
     email: string;
     password: string;
-    isVerified?: boolean;
+    accountVerificationToken: string;
+    isVerified: boolean;
     passwordRecoveryToken?: string;
-    accountVerificationToken?: string;
 };
 
 const userSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 255 },
     password: { type: String, required: true, minlength: 5, maxlength: 1024 },
+    accountConfirmationToken: { type: String, default: crypto({ length: 64, type: "url-safe" }) },
     isVerified: { type: Boolean, default: false },
-    resetPasswordToken: String,
-    accountConfirmationToken: String
+    resetPasswordToken: String
 });
 
 export const validate = (user: IUser) => {
