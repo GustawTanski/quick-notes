@@ -10,7 +10,7 @@ export default class LoginForm extends Controller {
 	}
 
 	setListeners() {
-		this.view.element.addEventListener("change", event =>
+		this.view.element.addEventListener("input", event =>
 			this._updateModel(event)
 		);
 
