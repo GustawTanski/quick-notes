@@ -6,15 +6,15 @@ import bcryptjs from "bcryptjs";
 export interface IUser extends Document {
     email: string;
     password: string;
-    isConfirmed?: boolean;
-    resetPasswordToken?: string;
-    accountConfirmationToken?: string;
+    isVerified?: boolean;
+    passwordRecoveryToken?: string;
+    accountVerificationToken?: string;
 };
 
 const userSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 255 },
     password: { type: String, required: true, minlength: 5, maxlength: 1024 },
-    isConfirmed: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false },
     resetPasswordToken: String,
     accountConfirmationToken: String
 });
@@ -39,5 +39,5 @@ userSchema.pre<IUser>("save", async function(next: NextFunction) {
     next();
 });
 
-const User = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 export default User;
