@@ -1,3 +1,6 @@
 export default class LoginFormModel {
-	constructor() {}
+	constructor() {
+		this.emailValue;
+		this.passwordValue;
+	}
 }
