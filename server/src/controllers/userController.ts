@@ -57,7 +57,7 @@ const _saveNewUser = async (req: Request, res: Response) => {
         accountVerificationToken: crypto({ length: 40, type: "url-safe" })
     });
 
-    await _sendVerificationEmail(res, user);
+    _sendVerificationEmail(res, user);
 
     if (res.headersSent) return;
 
@@ -65,7 +65,7 @@ const _saveNewUser = async (req: Request, res: Response) => {
     res.status(200).send(user);
 };
 
-const _sendVerificationEmail = async (res: Response, user: IUser) => {
+const _sendVerificationEmail = (res: Response, user: IUser) => {
     const mailOptions = {
         from: "email@email.com",
         to: user.email,
@@ -76,7 +76,7 @@ const _sendVerificationEmail = async (res: Response, user: IUser) => {
             `
     };
 
-    await _sendMail(res, mailOptions);
+    _sendMail(res, mailOptions);
 };
 
 const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) => {
@@ -90,13 +90,13 @@ const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) =
         .send("Logged in successfuly.");
 };
 
-const _sendRecoveryMail = async (res: Response, user: IUser) => {
+const _sendRecoveryMail = (res: Response, user: IUser) => {
     user.passwordRecoveryToken = crypto({ length: 40, type: "url-safe" });
 
     // TODO:: implement
 };
 
-const _sendMail = async (res: Response, mailOptions: Mail.Options) => {
+const _sendMail = (res: Response, mailOptions: Mail.Options) => {
     const transporter = nodemailer.createTransport({ service: "mailgun", auth });
     
     transporter.sendMail(mailOptions, err => {
