@@ -5,13 +5,43 @@ export default class Controller {
 		this.node = node;
 	}
 
+	set node(node) {
+		if (node instanceof Node) this._node = node;
+		else throw TypeError("Wrong node parameter. Should be a Node.");
+	}
+
+	get node() {
+		return this._node;
+	}
+
 	setListeners() {}
-	init() {
-		this.setListeners();
+
+	removeListeners() {}
+
+	mount() {
 		if (this.view instanceof View) this.node.appendChild(this.view.render());
+		this.setListeners();
 		for (const i in this) {
 			if (this[i] instanceof Controller) {
-				this[i].init();
+				this[i].mount();
+			}
+		}
+	}
+
+	unmount() {
+		if (this.view instanceof View) this.node.removeChild(this.view.render());
+		this.removeListeners();
+		for (const i in this) {
+			if (this[i] instanceof Controller) {
+				this[i].unmount();
+			}
+		}
+	}
+	init(mountAtInit = true) {
+		if (mountAtInit) this.mount();
+		for (const i in this) {
+			if (this[i] instanceof Controller) {
+				this[i].init(mountAtInit);
 			}
 		}
 	}
