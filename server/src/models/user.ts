@@ -31,10 +31,5 @@ export const validate = (user: IUser) => {
     return Joi.validate(user, validationSchema);
 };
 
-userSchema.pre<IUser>("save", async function(next: NextFunction) {
-    this.password = await bcryptjs.hash(this.password, 10);
-    next();
-});
-
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;

@@ -80,7 +80,7 @@ const _saveNewUser = async (req: Request, res: Response) => {
     
     user = new User({
         email: req.body.email,
-        password: req.body.password
+        password: await bcryptjs.hash(req.body.password, 10)
     });
 
     try {
@@ -104,7 +104,7 @@ const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) =
         .send("Logged in successfuly.");
 };
 
-const _sendVerificationEmail = async (res: Response, user: IUser) => {
+const _sendVerificationEmail = (res: Response, user: IUser) => {
     const url = `http://localhost:5000/verify/${user.accountVerificationToken}`;
 
     const mailOptions = {
@@ -121,7 +121,7 @@ const _sendVerificationEmail = async (res: Response, user: IUser) => {
     return _sendMail(mailOptions);
 };
 
-const _sendRecoveryMail = async (res: Response, user: IUser) => {
+const _sendRecoveryMail = (res: Response, user: IUser) => {
     const url = `http://localhost:5000/forgot/${user.passwordRecoveryToken}`;
 
     const mailOptions = {
@@ -146,21 +146,23 @@ const _generateRecoveryToken = async (user: IUser) => {
 };
 
 const _isRecoveryTokenValid = async (user: IUser, token: IUser["passwordRecoveryToken"]) => {
-    if (!user.passwordRecoveryToken || !user.passwordRecoveryExpiration)
-        return false;
+    const expiration = user.passwordRecoveryExpiration;
+    if (!expiration) return false;
 
-    const hasTokenExpired = user.passwordRecoveryExpiration.getMilliseconds() > Date.now();
+    const hasTokenExpired = expiration.getMilliseconds() > Date.now();
     const isTokenValid = user.passwordRecoveryToken === token;
 
     return hasTokenExpired && isTokenValid;
 };
 
 const _sendMail = (mailOptions: Mail.Options) => {
-    const transporter = nodemailer.createTransport(smtpTransport({
-        service: "gmail",
-        host: "smtp.gmail.com",
-        auth: auth
-    }));
+    const transporter = nodemailer.createTransport(
+        smtpTransport({
+            service: "gmail",
+            host: "smtp.gmail.com",
+            auth: auth
+        })
+    );
 
     return transporter.sendMail(mailOptions);
 };
