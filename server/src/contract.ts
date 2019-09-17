@@ -11,16 +11,9 @@ interface IUser extends Document {
 */
 
 /*
-    Email verification page
-    Endpoint: "/verify"
-    Method: GET
-    Renders a page containing information about verification
-*/
-
-/*
     Email verification
     Endpoint: "/verify/:token"
-    Method: POST
+    Method: PUT
 */
 
 /*
@@ -42,7 +35,7 @@ interface IUser extends Document {
     Password recovery
     Step 1st - generate token and send e-mail
     Endpoint: "/forgot/:email"
-    Method: GET
+    Method: PUT
 */
 
 /*

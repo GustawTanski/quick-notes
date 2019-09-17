@@ -10,14 +10,16 @@ export interface IUser extends Document {
     accountVerificationToken: string;
     isVerified: boolean;
     passwordRecoveryToken?: string;
+    passwordRecoveryExpiration?: Date;
 };
 
 const userSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 255 },
     password: { type: String, required: true, minlength: 5, maxlength: 1024 },
-    accountConfirmationToken: { type: String, default: crypto({ length: 64, type: "url-safe" }) },
+    accountVerificationToken: { type: String, default: crypto({ length: 64, type: "url-safe" }) },
     isVerified: { type: Boolean, default: false },
-    resetPasswordToken: String
+    resetPasswordToken: String,
+    passwordRecoveryExpiration: Date
 });
 
 export const validate = (user: IUser) => {

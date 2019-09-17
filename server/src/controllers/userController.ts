@@ -3,11 +3,11 @@ import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import key from "../privateKeyJWT";
-import auth from "../mailgunAuth";
+import auth from "../gmailAuth";
 import crypto from "crypto-random-string";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
-import mg from "nodemailer-mailgun-transport";
+import smtpTransport from "nodemailer-smtp-transport";
 
 const userController = {
     async registerUser(req: Request, res: Response) {
@@ -17,12 +17,17 @@ const userController = {
         _saveNewUser(req, res);
     },
 
-    async renderVerification(req: Request, res: Response) {
-        // TODO:: implement
-    },
-
     async verifyEmail(req: Request, res: Response) {
-        // TODO:: implement
+        const user = await User.findOne({ accountVerificationToken: req.params.token });
+
+        if (user && req.params.token === user.accountVerificationToken) {
+            user.isVerified = true;
+            user.accountVerificationToken = "";
+            await user.save();
+            res.status(200).send("Your account has been successfuly verified. You can start using it now!");
+        } else {
+            res.status(400).send("Invalid validation token or your account has already been verified.");
+        }
     },
 
     async loginUser(req: Request, res: Response) {
@@ -76,13 +81,16 @@ const _saveNewUser = async (req: Request, res: Response) => {
 };
 
 const _sendVerificationEmail = async (res: Response, user: IUser) => {
+    const url = `http://localhost:5000/verify/${user.accountVerificationToken}`;
+
     const mailOptions = {
-        from: "email@email.com",
+        from: "quicknotes.bootcamp@gmail.com",
         to: user.email,
         subject: "Quick-notes account verification",
         html: `
             Your Quick-notes account needs to be verified before you start using it.
-            You can do so by clicking <a href=${user.accountVerificationToken}>here</a>
+            You can do so by clicking <a href=${url}>here</a>, or opening the link below:<br><br>
+            <a href=${url}>${url}</a>
             `
     };
 
@@ -107,8 +115,12 @@ const _sendRecoveryMail = async (res: Response, user: IUser) => {
 };
 
 const _sendMail = (mailOptions: Mail.Options) => {
-    const transporter = nodemailer.createTransport(mg(auth));
-    transporter.verify();
+    // const transporter = nodemailer.createTransport(mg(auth));
+    const transporter = nodemailer.createTransport(smtpTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        auth
+    }));
 
     return transporter.sendMail(mailOptions);
 };

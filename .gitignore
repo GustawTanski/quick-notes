@@ -61,7 +61,5 @@ typings/
 .next
 
 server/src/dbAdminData.ts
-
-server/src/mailgunAuth.ts
-
+server/src/gmailAuth.ts
 server/src/privateKeyJWT.ts
