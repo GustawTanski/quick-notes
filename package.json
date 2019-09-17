@@ -24,6 +24,7 @@
   "homepage": "https://github.com/GustawTanski/quick-notes#readme",
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.6",
     "@types/express": "^4.17.1",
     "@types/joi": "^14.3.3",
     "@types/mongoose": "^5.5.17",
@@ -33,6 +34,7 @@
     "@types/pug": "^2.0.4",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.3.1",
+    "cors": "^2.8.5",
     "crypto-random-string": "^3.0.1",
     "express": "^4.17.1",
     "joi": "^14.3.1",

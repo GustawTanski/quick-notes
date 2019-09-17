@@ -8,8 +8,9 @@ router.use(express.json());
 router.post("/register", userController.registerUser);
 router.get("/verify/:token", userController.verifyEmail);
 router.post("/login", userController.loginUser);
-router.get("/forgot/", userController.renderRecovery);
+router.get("/forgot/", userController.renderInputEmailForm);
 router.put("/forgot/:email", userController.passwordRecoveryEmail);
+router.get("/forgot/:token", userController.renderPasswordRecoveryForm);
 router.put("/forgot/:token", userController.updateUserPassword);
 
 export default router;

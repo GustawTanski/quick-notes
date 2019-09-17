@@ -11,7 +11,7 @@ export interface IUser extends Document {
     isVerified: boolean;
     passwordRecoveryToken?: string;
     passwordRecoveryExpiration?: Date;
-};
+}
 
 const userSchema: Schema = new Schema({
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 255 },
@@ -29,12 +29,6 @@ export const validate = (user: IUser) => {
     };
 
     return Joi.validate(user, validationSchema);
-};
-
-export const validateEmail = (email: IUser["email"]) => {
-    const validationSchema = { email: Joi.string().min(5).max(255).required().email() };
-
-    return Joi.validate(email, validationSchema);
 };
 
 userSchema.pre<IUser>("save", async function(next: NextFunction) {

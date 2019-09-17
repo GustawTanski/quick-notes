@@ -1,6 +1,10 @@
 interface IUser extends Document {
     email: string;
     password: string;
+    accountVerificationToken: string;
+    isVerified: boolean;
+    passwordRecoveryToken?: string;
+    passwordRecoveryExpiration?: Date;
 }
 
 /*
@@ -13,7 +17,7 @@ interface IUser extends Document {
 /*
     Email verification
     Endpoint: "/verify/:token"
-    Method: PUT
+    Method: GET
 */
 
 /*
@@ -25,10 +29,10 @@ interface IUser extends Document {
 */
 
 /*
-    Password recovery page
+    Password recovery - e-mail form
     Endpoint: "/forgot"
     Method: GET
-    Renders a page containing a form for recovering a lost password
+    Renders a page containing a form in which user types in his e-mail
 */
 
 /*
@@ -36,6 +40,13 @@ interface IUser extends Document {
     Step 1st - generate token and send e-mail
     Endpoint: "/forgot/:email"
     Method: PUT
+*/
+
+/*
+    Password recovery - new password form
+    Endpoint: "/forgot/:token"
+    Method: GET
+    Renders a page containing a form in which user types in his new password
 */
 
 /*
