@@ -1,4 +1,4 @@
-import User, { validate, IUser } from "../models/User";
+import User, { validate, IUser } from "../models/user";
 import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
