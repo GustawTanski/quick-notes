@@ -3,9 +3,13 @@ import mongoose from "mongoose";
 import uri from "./dbAdminData";
 import users from "./routes/users";
 import auth from "./middlewares/auth";
+import notesModule from "./notesModule/notesModule";
 
 const app: Application = express();
 const PORT: number = Number(process.env.PORT) || 5000;
+
+const notesApi = notesModule.init();
+app.use("/", notesApi.router);
 
 app.use("/", users);
 
