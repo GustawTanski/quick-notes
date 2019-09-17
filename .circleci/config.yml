@@ -37,16 +37,17 @@ jobs:
       - run: yarn run build
       - run: npx surge --project dist/ --domain https://quick-notes.surge.sh
       - run: yarn run tsc
-      - run: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      
   deploy:
-  
+
     docker:
       - image: google/cloud-sdk:latest
 
     working_directory: ~/repo
 
     steps:
+      - run: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
       - run: gcloud app deploy server/dist
