@@ -18,7 +18,7 @@ const userSchema: Schema = new Schema({
     password: { type: String, required: true, minlength: 5, maxlength: 1024 },
     accountVerificationToken: { type: String, default: crypto({ length: 64, type: "url-safe" }) },
     isVerified: { type: Boolean, default: false },
-    resetPasswordToken: String,
+    passwordRecoveryToken: String,
     passwordRecoveryExpiration: Date
 });
 

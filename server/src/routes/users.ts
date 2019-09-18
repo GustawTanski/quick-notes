@@ -4,6 +4,7 @@ import userController from "../controllers/userController";
 const router: Router = express.Router();
 
 router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
 router.post("/register", userController.registerUser);
 router.get("/verify/:token", userController.verifyEmail);

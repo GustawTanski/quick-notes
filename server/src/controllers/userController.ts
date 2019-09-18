@@ -45,13 +45,13 @@ const userController = {
     },
 
     async passwordRecoveryEmail(req: Request, res: Response) {
-        let user = await User.findOne({ email: req.query.email });
+        let user = await User.findOne({ email: req.body.email });
         if (!user) return res.status(401).send("User with this e-mail address doesn't exist.");
     
         try {
             user = await _generateRecoveryToken(user);
             await _sendRecoveryMail(res, user);
-            res.status(200).send("An e-mail has been sent to you with further instructions.");
+            res.render("passwordRecoveryEmailSent");
         } catch (e) {
             res.status(500).send();
         }
@@ -62,11 +62,15 @@ const userController = {
     },
 
     async updateUserPassword(req: Request, res: Response) {
-        const user = await User.findOne({ passwordRecoveryToken: req.params.token });
+        const user = await User.findOne({ passwordRecoveryToken: req.body.token });
 
-        if (user && _isRecoveryTokenValid(user, req.params.token)) {
-            // TODO:: implement
-            await _deleteValidationToken(user);
+        if (user && _isRecoveryTokenValid(user, req.body.token)) {
+            if (req.body.password !== req.body.password2)
+                res.status(400).send("Provided passwords don't match.");
+
+            await _deleteValidationTokenAndUpdatePassword(user, req.body.password)
+                .catch(e => res.status(400).send("You have not provided enough data."));
+            res.render("finishPasswordRecovery");
         } else {
             res.status(400).send("Invalid password recovery token.");
         }
@@ -81,7 +85,7 @@ const _saveNewUser = async (req: Request, res: Response) => {
     
     user = new User({
         email: req.body.email,
-        password: await bcryptjs.hash(req.body.password, 10)
+        password: await _hashPassword(req.body.password)
     });
 
     try {
@@ -93,6 +97,10 @@ const _saveNewUser = async (req: Request, res: Response) => {
         console.log(e);
     }
 };
+
+const _hashPassword = async (password: IUser["password"]) => {
+    return bcryptjs.hash(password, 10);
+}
 
 const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) => {
     const isPasswordCorrect: boolean = await bcryptjs.compare(req.body.password, user.password);
@@ -123,7 +131,7 @@ const _sendVerificationEmail = (res: Response, user: IUser) => {
 };
 
 const _sendRecoveryMail = (res: Response, user: IUser) => {
-    const url = `http://localhost:5000/forgot/${user.passwordRecoveryToken}`;
+    const url = `http://localhost:5000/recover?token=${user.passwordRecoveryToken}`;
 
     const mailOptions = {
         from: "quicknotes.bootcamp@gmail.com",
@@ -156,9 +164,13 @@ const _isRecoveryTokenValid = async (user: IUser, token: IUser["passwordRecovery
     return hasTokenExpired && isTokenValid;
 };
 
-const _deleteValidationToken = async (user: IUser) => {
+const _deleteValidationTokenAndUpdatePassword = async (user: IUser, password: IUser["password"]) => {
+    user.passwordRecoveryToken = "";
+    user.passwordRecoveryExpiration = new Date(0);
+    user.password = await _hashPassword(password);
 
-}
+    await user.save();
+};
 
 const _sendMail = (mailOptions: Mail.Options) => {
     const transporter = nodemailer.createTransport(
