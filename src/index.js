@@ -3,5 +3,15 @@ import "bootstrap";
 
 import App from "./components/App";
 
-const app = new App(document.querySelector("#root"));
-app.init();
+try {
+	const app = new App(document.querySelector("#root"));
+	try {
+		app.init();
+	} catch (error) {
+		console.error(error);
+		alert("Runtime error!");
+	}
+} catch (error) {
+	console.error(error);
+	alert("Building error!");
+}
