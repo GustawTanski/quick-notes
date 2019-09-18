@@ -115,7 +115,7 @@ const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) =
 };
 
 const _sendVerificationEmail = (res: Response, user: IUser) => {
-    const url = `http://localhost:5000/verify/${user.accountVerificationToken}`;
+    const url = `https://quick-notes-253112.appspot.com/verify/${user.accountVerificationToken}`;
 
     const mailOptions = {
         from: "quicknotes.bootcamp@gmail.com",
@@ -132,7 +132,7 @@ const _sendVerificationEmail = (res: Response, user: IUser) => {
 };
 
 const _sendRecoveryMail = (res: Response, user: IUser) => {
-    const url = `http://localhost:5000/recover?token=${user.passwordRecoveryToken}`;
+    const url = `https://quick-notes-253112.appspot.com/recover?token=${user.passwordRecoveryToken}`;
 
     const mailOptions = {
         from: "quicknotes.bootcamp@gmail.com",
