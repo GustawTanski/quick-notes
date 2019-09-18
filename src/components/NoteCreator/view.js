@@ -30,7 +30,7 @@ export default class NoteCreatorView extends View {
 
 		let noteTitleLabel = document.createElement("label");
 		noteTitleLabel.setAttribute("for", this.noteTitleInputID);
-		noteTitleLabel.innerText = "Your note title:";
+		noteTitleLabel.innerText = "Title:";
 
 		let noteTitleInput = document.createElement("input");
 		noteTitleInput.classList.add("form-control");
@@ -51,7 +51,7 @@ export default class NoteCreatorView extends View {
 
 		let noteBodyLabel = document.createElement("label");
 		noteBodyLabel.setAttribute("for", this.noteTextareaID);
-		noteBodyLabel.innerText = "Your note:";
+		noteBodyLabel.innerText = "Note:";
 
 		let noteBodyTextarea = document.createElement("textarea");
 		noteBodyTextarea.classList.add("form-control");
@@ -68,7 +68,7 @@ export default class NoteCreatorView extends View {
 	}
 
 	_noteSubmitButtonDOMCreator() {
-		const buttonText = "Submit";
+		const buttonText = "Add";
 
 		let noteSubmitButtonGroup = document.createElement("div");
 		noteSubmitButtonGroup.classList.add("form-group");
@@ -76,7 +76,7 @@ export default class NoteCreatorView extends View {
 		let submitButton = document.createElement("input");
 		submitButton.setAttribute("type", "submit");
 		submitButton.classList.add("btn", "btn-success");
-		submitButton.innerText = buttonText;
+		submitButton.value = buttonText;
 
 		noteSubmitButtonGroup.appendChild(submitButton);
 
