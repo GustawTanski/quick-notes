@@ -45,11 +45,11 @@ const userController = {
     },
 
     async passwordRecoveryEmail(req: Request, res: Response) {
-        const user = await User.findOne({ email: req.query.email });
+        let user = await User.findOne({ email: req.query.email });
         if (!user) return res.status(401).send("User with this e-mail address doesn't exist.");
     
         try {
-            await _generateRecoveryToken(user);
+            user = await _generateRecoveryToken(user);
             await _sendRecoveryMail(res, user);
             res.status(200).send("An e-mail has been sent to you with further instructions.");
         } catch (e) {

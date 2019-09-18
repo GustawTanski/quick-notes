@@ -10,7 +10,7 @@ router.get("/verify/:token", userController.verifyEmail);
 router.post("/login", userController.loginUser);
 router.get("/forgot/", userController.renderInputEmailForm);
 router.post("/forgot/", userController.passwordRecoveryEmail);
-router.get("/recover/:token", userController.renderPasswordRecoveryForm);
-router.post("/recover/:token", userController.updateUserPassword);
+router.get("/recover", userController.renderPasswordRecoveryForm);
+router.post("/recover", userController.updateUserPassword);
 
 export default router;

@@ -7,6 +7,6 @@ block content
     form(action="http://localhost:5000/forgot", method="post")
         .form-group
             label(for="email") Email
-            input.form-control(type="email", name="email", value="test@mail.com")
+            input.form-control(type="email", name="email", id="email", required)
         .form-group
             button.btn.btn-primary.btn-block.btn-lg(type="submit") Send an email
