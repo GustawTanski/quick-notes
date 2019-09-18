@@ -1,0 +1,12 @@
+extends template.pug
+
+block content
+    p.mb-5.
+        To reset your password type your email address in the form below.
+        We'll then send you an email with further instructions.
+    form(action="http://localhost:5000/forgot", method="post")
+        .form-group
+            label(for="email") Email
+            input.form-control(type="email", name="email", value="test@mail.com")
+        .form-group
+            button.btn.btn-primary.btn-block.btn-lg(type="submit") Send an email

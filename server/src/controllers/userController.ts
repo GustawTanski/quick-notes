@@ -41,11 +41,11 @@ const userController = {
     },
 
     async renderInputEmailForm(req: Request, res: Response) {
-        // TODO:: implement
+        res.render("inputEmailForm");
     },
 
     async passwordRecoveryEmail(req: Request, res: Response) {
-        const user = await User.findOne({ email: req.params.email });
+        const user = await User.findOne({ email: req.query.email });
         if (!user) return res.status(401).send("User with this e-mail address doesn't exist.");
     
         try {
@@ -58,7 +58,7 @@ const userController = {
     },
 
     async renderPasswordRecoveryForm(req: Request, res: Response) {
-        // TODO:: implement
+        res.render("passwordRecoveryForm");
     },
 
     async updateUserPassword(req: Request, res: Response) {
@@ -66,6 +66,7 @@ const userController = {
 
         if (user && _isRecoveryTokenValid(user, req.params.token)) {
             // TODO:: implement
+            await _deleteValidationToken(user);
         } else {
             res.status(400).send("Invalid password recovery token.");
         }
@@ -154,6 +155,10 @@ const _isRecoveryTokenValid = async (user: IUser, token: IUser["passwordRecovery
 
     return hasTokenExpired && isTokenValid;
 };
+
+const _deleteValidationToken = async (user: IUser) => {
+
+}
 
 const _sendMail = (mailOptions: Mail.Options) => {
     const transporter = nodemailer.createTransport(

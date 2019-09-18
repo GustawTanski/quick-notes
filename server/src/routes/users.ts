@@ -9,8 +9,8 @@ router.post("/register", userController.registerUser);
 router.get("/verify/:token", userController.verifyEmail);
 router.post("/login", userController.loginUser);
 router.get("/forgot/", userController.renderInputEmailForm);
-router.put("/forgot/:email", userController.passwordRecoveryEmail);
-router.get("/forgot/:token", userController.renderPasswordRecoveryForm);
-router.put("/forgot/:token", userController.updateUserPassword);
+router.post("/forgot/", userController.passwordRecoveryEmail);
+router.get("/recover/:token", userController.renderPasswordRecoveryForm);
+router.post("/recover/:token", userController.updateUserPassword);
 
 export default router;

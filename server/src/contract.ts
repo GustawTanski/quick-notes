@@ -38,13 +38,13 @@ interface IUser extends Document {
 /*
     Password recovery
     Step 1st - generate token and send e-mail
-    Endpoint: "/forgot/:email"
-    Method: PUT
+    Endpoint: "/forgot"
+    Method: POST
 */
 
 /*
     Password recovery - new password form
-    Endpoint: "/forgot/:token"
+    Endpoint: "/recover/:token"
     Method: GET
     Renders a page containing a form in which user types in his new password
 */
@@ -52,6 +52,6 @@ interface IUser extends Document {
 /*
     Password recovery
     Step 2nd - verify token and update password
-    Endpoint: "/forgot/:token"
-    Method: PUT
+    Endpoint: "/recover/:token"
+    Method: POST
 */
