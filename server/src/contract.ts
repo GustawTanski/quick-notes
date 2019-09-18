@@ -1,7 +1,24 @@
 interface IUser extends Document {
     email: string;
     password: string;
+    accountVerificationToken: string;
+    isVerified: boolean;
+    passwordRecoveryToken?: string;
+    passwordRecoveryExpiration?: Date;
 }
+
+/*
+    Register
+    Endpoint: "/register"
+    Method: POST
+    Request body should contain an object of type IUser
+*/
+
+/*
+    Email verification
+    Endpoint: "/verify/:token"
+    Method: GET
+*/
 
 /*
     Login
@@ -12,8 +29,29 @@ interface IUser extends Document {
 */
 
 /*
-    Register
-    Endpoint: "/"
+    Password recovery - e-mail form
+    Endpoint: "/forgot"
+    Method: GET
+    Renders a page containing a form in which user types in his e-mail
+*/
+
+/*
+    Password recovery
+    Step 1st - generate token and send e-mail
+    Endpoint: "/forgot"
     Method: POST
-    Request body should contain an object of type IUser
+*/
+
+/*
+    Password recovery - new password form
+    Endpoint: "/recover/:token"
+    Method: GET
+    Renders a page containing a form in which user types in his new password
+*/
+
+/*
+    Password recovery
+    Step 2nd - verify token and update password
+    Endpoint: "/recover/:token"
+    Method: POST
 */

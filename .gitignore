@@ -60,3 +60,7 @@ typings/
 
 # next.js build output
 .next
+
+server/src/dbAdminData.ts
+server/src/gmailAuth.ts
+server/src/privateKeyJWT.ts
