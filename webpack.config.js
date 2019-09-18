@@ -1,6 +1,7 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
 	entry: "./src/index.js",
@@ -18,7 +19,15 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
-				use: ["style-loader", "css-loader"]
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							hmr: process.env.NODE_ENV === "development"
+						}
+					},
+					"css-loader"
+				]
 			},
 			{
 				test: /\.(png|svg|jpe?g|gif)$/,
@@ -33,10 +42,16 @@ module.exports = {
 						options: {
 							presets: ["@babel/preset-env"]
 						}
-                    },
-                    "source-map-loader",
-                    "prettier-loader"
+					},
+					"prettier-loader"
 				]
+			},
+			{
+				test: /\.js$/,
+				enforce: "pre",
+				exclude: /node_modules/,
+				include: "/node_modules/bootstrap",
+				use: ["source-map-loader"]
 			},
 			{
 				test: /\.html$/,
@@ -48,6 +63,11 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new HTMLWebpackPlugin({
 			template: "src/index.html"
+		}),
+		new MiniCssExtractPlugin({
+			filename: "[name].css",
+			chunkFilename: "[id].css",
+			ignoreOrder: false
 		})
 	]
 };
