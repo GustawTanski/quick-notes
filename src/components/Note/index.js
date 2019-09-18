@@ -4,7 +4,7 @@ import View from "./view";
 
 export default class Note extends Controller {
     constructor(node, configurations) {
-        super(node);
+        super(node, configurations);
         this.model = new Model(configurations)
         this.view = new View(this.model.configurations)
     }
