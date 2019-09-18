@@ -1,6 +1,5 @@
 import express, { Application } from "express";
 import mongoose from "mongoose";
-import uri from "./dbAdminData";
 import users from "./routes/users";
 import auth from "./middlewares/auth";
 import cors from "cors";
@@ -24,6 +23,9 @@ app.use(auth);
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`)
+
+    const uri = process.env.DB_URI;
+    if (!uri) throw new Error("Environmental variable DB_URI is missing.");
 
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         .then(() => console.log("Connected to database..."))

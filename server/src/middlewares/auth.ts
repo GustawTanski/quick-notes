@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import key from "../privateKeyJWT";
 
 export default (req: Request, res: Response, next: NextFunction) => {
 	const token = req.headers["x-auth-token"];
 
+    const jwt_secret = process.env.JWT_SECRET;
+    if (!jwt_secret) return res.status(500).send("Environmental variable JWT_SECRET is missing.");
+
 	if (token && typeof token == "string") {
-        _verify(token, key, res, next);
+        _verify(token, jwt_secret, res, next);
     } else {
         return res.status(401).send("Auth token has not been supplied.");
     }

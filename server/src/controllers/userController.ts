@@ -2,8 +2,6 @@ import User, { validate, IUser } from "../models/User";
 import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import key from "../privateKeyJWT";
-import auth from "../gmailAuth";
 import crypto from "crypto-random-string";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
@@ -108,7 +106,10 @@ const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) =
 
     if (!user.isVerified) return res.status(401).send("This account isn't verified yet.");
 
-    res.header("x-auth-token", jwt.sign({ email: user.email }, key))
+    const jwt_secret = process.env.JWT_SECRET;
+    if (!jwt_secret) return res.status(500).send("Environmental variable JWT_SECRET is missing.");
+
+    res.header("x-auth-token", jwt.sign({ email: user.email }, jwt_secret))
         .status(200)
         .send("Logged in successfuly.");
 };
@@ -177,7 +178,10 @@ const _sendMail = (mailOptions: Mail.Options) => {
         smtpTransport({
             service: "gmail",
             host: "smtp.gmail.com",
-            auth: auth
+            auth: {
+                user: process.env.GMAIL_USER,
+                pass: process.env.GMAIL_PASS
+            }
         })
     );
 

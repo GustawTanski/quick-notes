@@ -1,7 +1,5 @@
-import { NextFunction } from "express";
 import mongoose, { Schema, Document } from "mongoose";
 import Joi from "joi";
-import bcryptjs from "bcryptjs";
 import crypto from "crypto-random-string";
 
 export interface IUser extends Document {
