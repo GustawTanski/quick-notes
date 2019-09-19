@@ -18,10 +18,6 @@ app.use("/", users);
 
 app.use(auth);
 
-// all routes which require authentication should be placed here
-
-
-
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`)
 
