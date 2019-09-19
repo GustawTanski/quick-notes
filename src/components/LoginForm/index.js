@@ -19,6 +19,10 @@ export default class LoginForm extends Controller {
 		this.view.signUpLink.addEventListener("click", event =>
 			this._redirectToSignUpPage()
 		);
+
+		this.view.forgotLink.addEventListener("click", event =>
+			this._redirectToForgotPage()
+		);
 	}
 
 	_updateModel(event) {
@@ -46,5 +50,9 @@ export default class LoginForm extends Controller {
 
 	_redirectToSignUpPage() {
 		console.log("redirecting to sign up page");
+	}
+
+	_redirectToForgotPage() {
+		console.log("redirecting to forgot page");
 	}
 }
