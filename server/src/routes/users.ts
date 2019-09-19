@@ -6,7 +6,7 @@ const router: Router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-router.use(["/login", "/register"], headerDecoder)
+router.use(["/login", "/register"], headerDecoder);
 
 router.post("/register", userController.registerUser);
 router.get("/verify/:token", userController.verifyEmail);
