@@ -1,5 +1,12 @@
+import LoginForm from "../LoginForm";
+import RegisterForm from "../RegisterForm";
+
 export default class RouterModel {
-	constructor() { }
+	constructor(node) {
+		this.login = new LoginForm(node);
+		this.register = new RegisterForm(node);
+		// this.noteCreator = new NoteCreator(node);
+	}
 	setURL(newURL) {
 		history.pushState("", newURL, `/#/${newURL}`);
 	}

@@ -4,15 +4,13 @@ import Model from "./Model";
 export default class Router extends Controller {
 	constructor(node) {
 		super(node);
-		this.model = new Model();
+		this.model = new Model(node);
 		this.hrefHandler = this.hrefHandler.bind(this);
-		this.login = new LoginForm(node);
-		this.register = new RegisterForm(node);
-		this.noteCreator = new NoteCreator(node);
+
 		this.routes = {
-			login: this.login,
-			register: this.register,
-			noteCreator: this.noteCreator
+			login: this.model.login,
+			register: this.model.register,
+			noteCreator: this.model.noteCreator
 		};
 		this.currentRoute = null;
 		this.hrefHandler();
@@ -29,6 +27,7 @@ export default class Router extends Controller {
 	mountComponent(newRoute, isSameRoute) {
 		if (!isSameRoute) {
 			this.currentRoute = newRoute;
+			console.log(this.currentRoute);
 			this.currentRoute.mount();
 		}
 	}
