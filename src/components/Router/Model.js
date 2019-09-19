@@ -1,11 +1,11 @@
 export default class RouterModel {
-	constructor() {}
+	constructor() { }
 	setURL(newURL) {
 		history.pushState("", newURL, `/#/${newURL}`);
 	}
 	manageURL() {
 		let href = window.location.href.split("#/")[1];
-		if (href == undefined) href = "home";
+		if (href == undefined) href = "login";
 		this.setURL(href);
 		return href;
 	}
