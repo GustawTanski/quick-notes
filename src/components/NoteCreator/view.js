@@ -20,8 +20,8 @@ export default class NoteCreatorView extends View {
 		return "noteCreatorTitleInput";
 	}
 
-	get noteTextareaID() {
-		return "noteCreatorTextArea";
+	get noteMessageInputID() {
+		return "noteCreatorMessageInput";
 	}
 
 	_noteTitleDOMCreator() {
@@ -50,12 +50,12 @@ export default class NoteCreatorView extends View {
 		noteBodyGroup.classList.add("form-group");
 
 		let noteBodyLabel = document.createElement("label");
-		noteBodyLabel.setAttribute("for", this.noteTextareaID);
+		noteBodyLabel.setAttribute("for", this.noteMessageInputID);
 		noteBodyLabel.innerText = "Note:";
 
 		let noteBodyTextarea = document.createElement("textarea");
 		noteBodyTextarea.classList.add("form-control");
-		noteBodyTextarea.setAttribute("id", this.noteTextareaID);
+		noteBodyTextarea.setAttribute("id", this.noteMessageInputID);
 		noteBodyTextarea.setAttribute("rows", "3");
 		noteBodyTextarea.placeholder = "Your note text message...";
 		noteBodyTextarea.required = true;

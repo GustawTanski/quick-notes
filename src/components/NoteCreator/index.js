@@ -5,12 +5,21 @@ import { conditionalExpression } from "@babel/types";
 
 /* Warstwa funkcjonalna, backend pod frontem */
 export default class NoteCreator extends Controller {
-	constructor(node) {
+	constructor(node, callback) {
 		super(node);
 
 		this.model = new Model();
 		this.view = new View();
 		window.addEventListener("DOMContentLoaded", this._initListeners.bind(this));
+
+		//only for production use
+		window.addEventListener("DOMContentLoaded", () => {
+			this.view.element.querySelector("#" + this.view.noteTitleInputID).value =
+				"Sample title";
+			this.view.element.querySelector(
+				"#" + this.view.noteMessageInputID
+			).value = "Sample message";
+		});
 	}
 
 	_initListeners(event) {
@@ -29,24 +38,14 @@ export default class NoteCreator extends Controller {
 		);
 
 		const noteMessage = this.view.element.querySelector(
-			"#" + this.view.noteTextareaID
+			"#" + this.view.noteMessageInputID
 		);
 
-		console.log("Title:", noteTitle.value);
-		console.log("Message:", noteMessage.value);
-	}
+		const newNote = {
+			title: noteTitle.value,
+			message: noteMessage.value
+		};
 
-	_checkEmptyValues(domElement) {
-		let value = domElement.value;
-
-		if (!value && typeof value === "string") {
-			let initialCase =
-				domElement.name.charAt(0).toUpperCase() + domElement.name.slice(1);
-
-			alert(`${initialCase} must not be empty`);
-
-			return false;
-		}
-		return true;
+		//TODO sending new note
 	}
 }

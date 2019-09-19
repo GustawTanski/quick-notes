@@ -1,2 +1,7 @@
 /* Warstwa informacyjna, aktualny stan komponentu*/
-export default class NoteCreatorModel {}
+export default class NoteCreatorModel {
+	constructor(title = "", message = "") {
+		this.title = title;
+		this.message = message;
+	}
+}
