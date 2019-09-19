@@ -1,37 +1,46 @@
 import View from "../../utils/View";
-import Model from "./model";
-
 
 export default class NoteView extends View {
-    constructor(note) {
-        super(note);
+	constructor(config) {
+		super();
 
-        this.element = document.createElement("form");
+		this.element = document.createElement("div");
+		this.element.classList.add("card", `text-${textColorForBg[config.color]}`);
+		this.element.style.maxWidth = "18rem";
+		this.element.style.background = `var(--${config.color})`;
 
-        const card = document.createElement("div");
-        card.classList.add("card");
-        card.style.color = note.color;
+		this.element.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">${config.title}</h5>
+                <p class="card-text">${config.content}</p>
+            </div>
+        `;
+		//Note content
+		this.title = this.element.querySelector(".card-title");
+		this.content = this.element.querySelector(".card-text");
+	}
+}
 
-        const cardBody = document.createElement("div");
-        cardBody.classList.add("card-body");
-
-
-        //Note content
-        this.title = document.createElement("h5");
-        this.title.classList.add("card-title");
-        this.title.innerText = note.title;
-
-        this.content = document.createElement("p");
-        this.content.classList.add("card-text");
-        this.content.innerText = note.content;
-
-
-
-
-        this.element.append(
-            card,
-            cardBody,
-            this.title,
-            this.content
-        )
-    }
+const textColorForBg = {
+	blue: "white",
+	indigo: "white",
+	purple: "white",
+	pink: "white",
+	red: "white",
+	orange: "black",
+	yellow: "black",
+	green: "white",
+	teal: "black",
+	cyan: "white",
+	white: "black",
+	gray: "white",
+	"gray-dark": "white",
+	primary: "white",
+	secondary: "white",
+	success: "white",
+	info: "white",
+	warning: "black",
+	danger: "white",
+	light: "black",
+	dark: "white"
+};

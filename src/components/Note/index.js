@@ -3,8 +3,9 @@ import Model from "./model";
 import View from "./view";
 
 export default class Note extends Controller {
-    constructor(node, configurations) {
-        super(node, configurations);
-        this.model = new Model(configurations)
-        this.view = new View(this.model.configurations)
-    }
+	constructor(node, config) {
+		super(node, config);
+		this.model = new Model(config);
+		this.view = new View(this.model.config);
+	}
+}
