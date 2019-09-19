@@ -1,6 +1,7 @@
 import Controller from "../../utils/Controller";
 import Model from "./model";
 import View from "./view";
+import RequestManager from "../../utils/RequestManager";
 
 export default class LoginForm extends Controller {
 	constructor(node) {
@@ -45,6 +46,11 @@ export default class LoginForm extends Controller {
 			console.log(
 				`logging in with email ${this.model.emailValue} and password ${this.model.passwordValue}`
 			);
+
+			RequestManager.postLoginCredentials(
+				this.model.emailValue,
+				this.model.passwordValue
+			).then(response => console.log(response));
 		}
 	}
 
