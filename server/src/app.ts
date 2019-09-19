@@ -4,6 +4,7 @@ import users from "./routes/users";
 import auth from "./middlewares/auth";
 import cors from "cors";
 import path from "path";
+require("dotenv").config();
 
 const app: Application = express();
 const PORT: number = Number(process.env.PORT) || 5000;
