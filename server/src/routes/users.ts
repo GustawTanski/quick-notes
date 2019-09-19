@@ -1,10 +1,12 @@
-import express, { Router } from "express";
+import express, { Router, NextFunction, Request, Response } from "express";
 import userController from "../controllers/userController";
+import headerDecoder from "../middlewares/headerDecoder";
 
 const router: Router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+router.use(["/login", "/register"], headerDecoder);
 
 router.post("/register", userController.registerUser);
 router.get("/verify/:token", userController.verifyEmail);

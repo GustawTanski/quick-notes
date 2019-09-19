@@ -109,7 +109,7 @@ const _verifyAndGenerateJWT = async (req: Request, res: Response, user: IUser) =
     const jwt_secret = process.env.JWT_SECRET;
     if (!jwt_secret) return res.status(500).send("Environmental variable JWT_SECRET is missing.");
 
-    res.header("x-auth-token", jwt.sign({ email: user.email }, jwt_secret))
+    res.header("x-auth-token", jwt.sign({ _id: user._id, email: user.email }, jwt_secret))
         .status(200)
         .send("Logged in successfuly.");
 };
