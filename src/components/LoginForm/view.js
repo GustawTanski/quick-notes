@@ -5,6 +5,8 @@ export default class LoginFormView extends View {
 		super();
 
 		this.element = document.createElement("form");
+		this.element.className =
+			"mx-auto col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4";
 
 		const emailGroup = document.createElement("div");
 		emailGroup.innerHTML = `
