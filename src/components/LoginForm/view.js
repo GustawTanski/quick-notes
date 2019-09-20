@@ -6,23 +6,23 @@ export default class LoginFormView extends View {
 
 		this.element = document.createElement("form");
 		this.element.className =
-			"mx-auto col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4";
+			"mx-auto col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 text-center mt-5";
 
 		const emailGroup = document.createElement("div");
 		emailGroup.innerHTML = `
 		<label for="emailInput">Email</label>
-		<input placeholder='email' type ="email" maxlength="255" required id="emailInput" class="form-control">`;
+		<input placeholder='email' type ="email" maxlength="255" required id="emailInput" class="form-control text-center">`;
 		this.emailInput = emailGroup.querySelector(".form-control");
 
 		const passwordGroup = document.createElement("div");
 		passwordGroup.innerHTML = `
 		<label for="passwordInput">Password</label>
-		<input placeholder='password' type ="password" pattern=".{5,}" required title="5 characters minimum" maxlength="255" id="passwordInput" class="form-control">`;
+		<input placeholder='password' type ="password" pattern=".{5,}" required title="5 characters minimum" maxlength="255" id="passwordInput" class="form-control text-center">`;
 		this.passwordInput = passwordGroup.querySelector(".form-control");
 
 		const submitGroup = document.createElement("div");
 		submitGroup.innerHTML = `
-		<button type='submit' class="btn btn-primary">Sign in</button>`;
+		<button type='submit' class="btn btn-primary btn-block">Sign in</button>`;
 
 		const signUpLinkGroup = document.createElement("div");
 		signUpLinkGroup.innerHTML = `
@@ -40,6 +40,10 @@ export default class LoginFormView extends View {
 			submitGroup,
 			signUpLinkGroup,
 			forgotLinkGroup
+		);
+
+		Array.from(this.element.children).forEach(child =>
+			child.classList.add("mb-3")
 		);
 	}
 
