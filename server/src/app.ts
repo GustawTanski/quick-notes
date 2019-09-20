@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import users from "./routes/users";
 import auth from "./middlewares/auth";
+import notesModule from "./notesModule/notesModule";
 import cors from "cors";
 import path from "path";
 require("dotenv").config();
@@ -13,6 +14,9 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({ exposedHeaders: ["x-auth-token"] }));
+
+const notesApi = notesModule.init();
+app.use("/", notesApi.router);
 
 app.use("/", users);
 
