@@ -1,9 +1,9 @@
 import NoteService from "./core/service/noteService";
-import MockRepo from "./infrastructure/mockRepo";
 import RestInterface from "./interface/restInterface";
+import MongoDbNotesRepository from "./infrastructure/mongoDbNotesRepository";
 
 const notesModule = {
-    NoteRepositoryImplementation: MockRepo,
+    NoteRepositoryImplementation: MongoDbNotesRepository,
     NoteServiceImplementation: NoteService,
 
     init: function() {
