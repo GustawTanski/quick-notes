@@ -17,7 +17,6 @@ export default class RestInterface{
 
         this.router.get('/notes', asyncHandler(async (req, res, next) => {
             let userId = this.extractUserId(req);
-            console.log("looking for notes of user "+userId);
             let notes = await noteService.selectNotesByAuthorId(userId);
             res.status(200).send(notes);
         }));

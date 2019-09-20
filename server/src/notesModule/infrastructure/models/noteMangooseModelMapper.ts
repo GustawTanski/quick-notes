@@ -1,35 +1,35 @@
 import "automapper-ts/dist/automapper";
-import mangoose, { Model, Schema } from "mongoose";
+import mongoose, { Model, Schema } from "mongoose";
 import Note from "../../core/domain/note";
-import NoteMangooseModelInterface from "./noteMangooseModelInterface";
+import NoteMongooseModelInterface from "./noteMangooseModelInterface";
 
 /**
  * Class responsible for generating NoteMangooseModel its instances objects used to manipulate the contents of MongoDb
  */
 export default class NoteMangooseModelMapper{
-    NoteMangooseModel: Model<NoteMangooseModelInterface>;
+    NoteMongooseModel: Model<NoteMongooseModelInterface>;
     schema: Schema;
 
     constructor(){
         this.schema = new Schema({},{strict: false});
-        this.NoteMangooseModel = mangoose.model<NoteMangooseModelInterface>("Note",this.schema);
+        this.NoteMongooseModel = mongoose.model<NoteMongooseModelInterface>("Note",this.schema);
 
-        automapper.createMap("Note","MangooseNote").forMember(
+        automapper.createMap("Note","MongooseNote").forMember(
             "_id",(opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.mapFrom('noteId'); }
         );
 
-        automapper.createMap("MangooseNote","Note").forMember(
+        automapper.createMap("MongooseNote","Note").forMember(
             "noteId",(opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.mapFrom('_id'); }
         );
     }
 
-    noteToMangooseModel(note: Note): NoteMangooseModelInterface{
-        let mangooseNote: NoteMangooseModelInterface = automapper.map("Note","MangooseNote",note);
-        return new this.NoteMangooseModel(mangooseNote);
+    noteToMongooseModel(note: Note): NoteMongooseModelInterface{
+        let mangooseNote: NoteMongooseModelInterface = automapper.map("Note","MongooseNote",note);
+        return new this.NoteMongooseModel(mangooseNote);
     }
 
-    mangooseModelToNote(mangooseModel: NoteMangooseModelInterface): Note{
-        let automapperOutput = automapper.map("MangooseNote","Note",mangooseModel.toObject());
+    mongooseModelToNote(mongooseModel: NoteMongooseModelInterface): Note{
+        let automapperOutput = automapper.map("MongooseNote","Note",mongooseModel.toObject());
         return new Note(automapperOutput);
     }
 }
