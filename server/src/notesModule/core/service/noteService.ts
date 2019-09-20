@@ -9,19 +9,25 @@ export default class NoteService implements NoteServicePort{
         this._noteRepository = noteRepository;
     }
 
-    saveNote(note: Note){
+    async saveNote(note: Note){
         return this._noteRepository.save(note);
     }
 
-    selectNoteById(noteId: string){
-        return this._noteRepository.selectById(noteId);
+    async selectNoteById(noteId: string, authorId: string){
+        return this._noteRepository.selectById(noteId, authorId);
     }
 
-    selectNotesByUserName(userName: string){
-        return this._noteRepository.selectByUserName(userName);
+    async selectNotesByAuthorId(authorId: string){
+        return this._noteRepository.selectByAuthorId(authorId);
     }
 
-    deleteNote(noteId: string){
-        return this._noteRepository.delete(noteId);
+    async deleteNote(noteId: string, authorId: string){
+        let noteToBeDeleted = this._noteRepository.selectById(noteId, authorId);
+        if(noteToBeDeleted) {
+            return this._noteRepository.delete(noteId);
+        }
+        else {
+            throw new Error("Note not found.");
+        }
     }
 }
