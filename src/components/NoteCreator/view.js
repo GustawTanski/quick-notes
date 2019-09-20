@@ -1,7 +1,6 @@
 import View from "../../utils/View";
-import { typeAlias } from "@babel/types";
+import possibleColors from "./possibleColors.json";
 
-/* Warstwa prezentacyjna */
 export default class NoteCreatorView extends View {
 	constructor() {
 		super();
@@ -12,8 +11,15 @@ export default class NoteCreatorView extends View {
 
 		let noteTitleGroup = this._noteTitleDOMCreator();
 		let noteBodyGroup = this._noteBodyDOMCreator();
+		let noteColorSelectorGroup = this._noteColorSelectorDOMCreator();
 		let noteButtonGroup = this._noteSubmitButtonDOMCreator();
-		this.children.push(noteTitleGroup, noteBodyGroup, noteButtonGroup);
+
+		this.children.push(
+			noteTitleGroup,
+			noteBodyGroup,
+			noteColorSelectorGroup,
+			noteButtonGroup
+		);
 	}
 
 	get noteTitleInputID() {
@@ -22,6 +28,33 @@ export default class NoteCreatorView extends View {
 
 	get noteMessageInputID() {
 		return "noteCreatorMessageInput";
+	}
+
+	get noteColorInputID() {
+		return "dropdownColorSelector";
+	}
+
+	_getColorsFromFile() {
+		let stringHTML = "";
+		for (let index in possibleColors) {
+			const color = possibleColors[index];
+
+			const classList = `bg-${color.colorName} ${color.fontColor} dropdown-item`;
+
+			color.colorName === "light"
+				? (classList += ` ${color.fontColor}`)
+				: undefined;
+			color.colorName === "white"
+				? (classList += ` ${color.fontColor}`)
+				: undefined;
+
+			const optionString = `<option value=${color.colorName} 
+				class="${classList}">${color.colorName}</option>`;
+
+			stringHTML += optionString;
+		}
+
+		return stringHTML;
 	}
 
 	_noteTitleDOMCreator() {
@@ -56,7 +89,7 @@ export default class NoteCreatorView extends View {
 		let noteBodyTextarea = document.createElement("textarea");
 		noteBodyTextarea.classList.add("form-control");
 		noteBodyTextarea.setAttribute("id", this.noteMessageInputID);
-		noteBodyTextarea.setAttribute("rows", "3");
+		noteBodyTextarea.setAttribute("rows", "6");
 		noteBodyTextarea.placeholder = "Your note text message...";
 		noteBodyTextarea.required = true;
 		noteBodyTextarea.name = "message";
@@ -81,5 +114,29 @@ export default class NoteCreatorView extends View {
 		noteSubmitButtonGroup.appendChild(submitButton);
 
 		return noteSubmitButtonGroup;
+	}
+
+	_noteColorSelectorDOMCreator() {
+		const colorSelectorLabel = "Color";
+
+		let colorSelectorGroup = document.createElement("div");
+		colorSelectorGroup.classList.add("dropdown");
+
+		const button = `<button 
+				class="btn btn-secondary dropdown-toggle" 
+				type="button"
+				id="${this.noteColorInputID}"
+				data-toggle="dropdown">Color
+			</button>`;
+
+		const dropdownDiv = document.createElement("div");
+		dropdownDiv.setAttribute("aria-labelledby", this.noteColorInputID);
+		dropdownDiv.classList.add("dropdown-menu");
+
+		colorSelectorGroup.innerHTML = `${button}`;
+		colorSelectorGroup.appendChild(dropdownDiv);
+		dropdownDiv.innerHTML = this._getColorsFromFile();
+
+		return colorSelectorGroup;
 	}
 }

@@ -1,0 +1,38 @@
+[
+	{
+		"colorName": "primary",
+		"fontColor": "text-white"
+	},
+	{
+		"colorName": "secondary",
+		"fontColor": "text-white"
+	},
+	{
+		"colorName": "success",
+		"fontColor": "text-white"
+	},
+	{
+		"colorName": "info",
+		"fontColor": "text-white"
+	},
+	{
+		"colorName": "warning",
+		"fontColor": "text-dark"
+	},
+	{
+		"colorName": "danger",
+		"fontColor": "text-white"
+	},
+	{
+		"colorName": "light",
+		"fontColor": "text-dark"
+	},
+	{
+		"colorName": "dark",
+		"fontColor": "text-white"
+	},
+	{
+		"colorName": "white",
+		"fontColor": "text-dark"
+	}
+]
