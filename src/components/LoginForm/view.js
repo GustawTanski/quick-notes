@@ -50,4 +50,15 @@ export default class LoginFormView extends View {
 	setPasswordInputValue(value) {
 		this.passwordInput.value = value;
 	}
+
+	showAlert(message) {
+		const alert = document.createElement("div");
+		alert.className = "alert alert-danger alert-dismissible fade show";
+		alert.role = "alert";
+		alert.innerHTML = `${message}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		  <span aria-hidden="true">&times;</span>
+		</button>`;
+		this.element.append(alert);
+	}
 }

@@ -56,7 +56,10 @@ export default class LoginForm extends Controller {
 			RequestManager.postLoginCredentials(
 				this.model.emailValue,
 				this.model.passwordValue
-			).then(response => console.log(response));
+			).then(response => {
+				console.log(response);
+				this.view.showAlert(response);
+			});
 		}
 	}
 
