@@ -1,8 +1,29 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express = require("express");
-var app = express();
+var express_1 = __importDefault(require("express"));
+var mongoose_1 = __importDefault(require("mongoose"));
+var users_1 = __importDefault(require("./routes/users"));
+var auth_1 = __importDefault(require("./middlewares/auth"));
+var cors_1 = __importDefault(require("cors"));
+var path_1 = __importDefault(require("path"));
+var app = express_1.default();
 var PORT = Number(process.env.PORT) || 5000;
+app.set("view engine", "pug");
+app.set("views", path_1.default.join(__dirname, "/views"));
+app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+app.use(cors_1.default());
+app.use("/", users_1.default);
+app.use(auth_1.default);
+// all routes which require authentication should be placed here
 app.listen(PORT, function () {
-    console.log("Listening on " + PORT + " port...");
+    console.log("Listening on port " + PORT + "...");
+    var uri = process.env.DB_URI;
+    if (!uri)
+        throw new Error("Environmental variable DB_URI is missing.");
+    mongoose_1.default.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+        .then(function () { return console.log("Connected to database..."); })
+        .catch(console.error);
 });

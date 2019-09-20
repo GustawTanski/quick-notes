@@ -1,0 +1,7 @@
+runtime: nodejs10
+
+env_variables:
+  GMAIL_USER: quicknotes.bootcamp@gmail.com
+  GMAIL_PASS: BootcampPassword123
+  JWT_SECRET: ##someSuperHARDkey7348!
+  DB_URI: mongodb+srv://admin:!SuperMocneHasloNaCoderscamp231!@cluster0-nsddk.gcp.mongodb.net/quick-notes?retryWrites=true&w=majority

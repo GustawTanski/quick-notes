@@ -8,21 +8,27 @@ export default class LoginForm extends Controller {
 		super(node);
 		this.model = new Model();
 		this.view = new View();
+		this._updateModel = this._updateModel.bind(this);
+		this._signIn = this._signIn.bind(this);
 	}
 
 	setListeners() {
-		this.view.element.addEventListener("input", event =>
-			this._updateModel(event)
+		this.view.element.addEventListener("input", this._updateModel);
+		this.view.element.addEventListener("submit", this._signIn);
+		this.view.signUpLink.addEventListener("click", this._redirectToSignUpPage);
+		this.view.forgotLink.addEventListener("click", this._redirectToForgotPage);
+	}
+
+	unsetListeners() {
+		this.view.element.removeEventListener("input", this._updateModel);
+		this.view.element.removeEventListener("submit", this._signIn);
+		this.view.signUpLink.removeEventListener(
+			"click",
+			this._redirectToSignUpPage
 		);
-
-		this.view.element.addEventListener("submit", event => this._signIn(event));
-
-		this.view.signUpLink.addEventListener("click", event =>
-			this._redirectToSignUpPage()
-		);
-
-		this.view.forgotLink.addEventListener("click", event =>
-			this._redirectToForgotPage()
+		this.view.forgotLink.removeEventListener(
+			"click",
+			this._redirectToForgotPage
 		);
 	}
 
