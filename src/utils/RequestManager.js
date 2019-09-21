@@ -42,18 +42,20 @@ class RequestManager {
 					}
 				}
 			);
-			if (response.status == "200") {
-				sessionStorage.setItem("jwt", response.headers["x-auth-token"]);
-				this.requester.defaults.headers.common[
-					"x-auth-token"
-				] = sessionStorage.getItem("jwt");
-			}
+
+			this.requester.defaults.headers.common["x-auth-token"] =
+				response.headers["x-auth-token"];
+
 			console.log(response.data);
 			return response.data;
 		} catch (error) {
 			console.log(error.response.data);
 			return error.response.data;
 		}
+	}
+
+	logout(){
+		delete this.requester.defaults.headers.common["x-auth-token"];
 	}
 
 	async getNote(user, noteID) {
@@ -76,10 +78,12 @@ class RequestManager {
 		}
 	}
 
-	async postNote(user, noteText) {
+	async postNote(user, color, message,title) {
 		try {
 			const response = await this.requester.post(`/${user}/notes`, {
-				noteText
+				color,
+				message,
+				title
 			});
 			return response.data;
 		} catch (error) {
@@ -88,10 +92,12 @@ class RequestManager {
 		}
 	}
 
-	async putNote(user, noteID, noteText) {
+	async putNote(user, noteID, color, message,title) {
 		try {
 			const response = await this.requester.put(`/${user}/notes/${noteID}`, {
-				noteText
+				color,
+				message,
+				title
 			});
 			return response.data;
 		} catch (error) {
