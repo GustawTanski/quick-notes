@@ -9,16 +9,12 @@ class RequestManager {
 
 	async postRegisterCredentials(email, password) {
 		try {
-			const { data, status } = await this.requester.post(
-				"/register",
-				{},
-				{
+			const { data, status } = await this.requester.post("/register",{},{
 					auth: {
 						username: email,
 						password
 					}
-				}
-			);
+				});
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
@@ -30,16 +26,12 @@ class RequestManager {
 
 	async postLoginCredentials(email, password) {
 		try {
-			const { data, status } = await this.requester.post(
-				"/login",
-				{},
-				{
+			const { data, status } = await this.requester.post("/login",{},{
 					auth: {
 						username: email,
 						password
 					}
-				}
-			);
+				});
 			this.requester.defaults.headers.common["x-auth-token"] =
 				response.headers["x-auth-token"];
 			return { data, status };
