@@ -25,8 +25,8 @@ class RequestManager {
 			console.log(response.data);
 			return response.data;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data || {};
 		}
 	}
 
@@ -49,8 +49,8 @@ class RequestManager {
 			console.log(response.data);
 			return response.data;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data || {};
 		}
 	}
 
@@ -63,8 +63,8 @@ class RequestManager {
 			const response = await this.requester.get(`/${user}/notes/${noteID}`);
 			return response.data;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data ||{};
 		}
 	}
 
@@ -73,8 +73,8 @@ class RequestManager {
 			const response = await this.requester.get(`/${user}/notes`);
 			if (response.status == "200") return response.data.notes;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data || {};
 		}
 	}
 
@@ -87,8 +87,8 @@ class RequestManager {
 			});
 			return response.data;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data || {};
 		}
 	}
 
@@ -101,8 +101,8 @@ class RequestManager {
 			});
 			return response.data;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data || {};
 		}
 	}
 
@@ -111,8 +111,8 @@ class RequestManager {
 			const response = await this.requester.delete(`/${user}/notes/${noteID}`);
 			return response.data;
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			console.log(error.response.data || {});
+			return error.response.data || {};
 		}
 	}
 }
