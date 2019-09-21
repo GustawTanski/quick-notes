@@ -5,9 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var userController_1 = __importDefault(require("../controllers/userController"));
+var headerDecoder_1 = __importDefault(require("../middlewares/headerDecoder"));
 var router = express_1.default.Router();
 router.use(express_1.default.json());
 router.use(express_1.default.urlencoded({ extended: true }));
+router.use(["/login", "/register"], headerDecoder_1.default);
 router.post("/register", userController_1.default.registerUser);
 router.get("/verify/:token", userController_1.default.verifyEmail);
 router.post("/login", userController_1.default.loginUser);

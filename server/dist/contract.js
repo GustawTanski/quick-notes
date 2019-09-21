@@ -40,4 +40,4 @@
     Step 2nd - verify token and update password
     Endpoint: "/recover/:token"
     Method: POST
-*/ 
+*/

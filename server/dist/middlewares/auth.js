@@ -8,7 +8,9 @@ exports.default = (function (req, res, next) {
     var token = req.headers["x-auth-token"];
     var jwt_secret = process.env.JWT_SECRET;
     if (!jwt_secret)
-        return res.status(500).send("Environmental variable JWT_SECRET is missing.");
+        return res
+            .status(500)
+            .send("Environmental variable JWT_SECRET is missing.");
     if (token && typeof token == "string") {
         _verify(token, jwt_secret, res, next);
     }
