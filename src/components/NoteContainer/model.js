@@ -1,4 +1,4 @@
-// import RequestManager from "../../utils/RequestManager";
+import RequestManager from "../../utils/RequestManager";
 
 export default class NoteContainerModel {
 	constructor() {
