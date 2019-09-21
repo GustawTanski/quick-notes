@@ -1,16 +1,15 @@
 import Controller from "../../utils/Controller";
 import Model from "./Model";
-
 export default class Router extends Controller {
 	constructor(node) {
 		super(node);
 		this.model = new Model(node);
 		this.hrefHandler = this.hrefHandler.bind(this);
-
 		this.routes = {
 			login: this.model.login,
 			register: this.model.register,
-			noteCreator: this.model.noteCreator
+			creator: this.model.noteCreator,
+			notes: this.model.noteContainer
 		};
 		this.currentRoute = null;
 		this.hrefHandler();
@@ -20,6 +19,7 @@ export default class Router extends Controller {
 			return console.log("This parameter should be string.");
 		}
 		let newRoute = this.routes[route];
+		if (newRoute == undefined) newRoute = this.routes.login;
 		let isSameRoute = this.isSameRoute(newRoute);
 		if (this.currentRoute != null && !isSameRoute) this.currentRoute.unmount();
 		this.mountComponent(newRoute, isSameRoute);
@@ -27,7 +27,6 @@ export default class Router extends Controller {
 	mountComponent(newRoute, isSameRoute) {
 		if (!isSameRoute) {
 			this.currentRoute = newRoute;
-			console.log(this.currentRoute);
 			this.currentRoute.mount();
 		}
 	}
