@@ -35,7 +35,7 @@ export default class LoginFormView extends View {
 
 		const forgotLinkGroup = document.createElement("div");
 		forgotLinkGroup.innerHTML = `
-		<p class="mb-3">Can't remeber password?<a href="/forgot"> Reset it here!</a></p>`;
+		<p class="mb-3">Can't remeber password?<a href="http://quick-notes-253112.appspot.com/forgot"> Reset it here!</a></p>`;
 
 		this.element.append(
 			header,
