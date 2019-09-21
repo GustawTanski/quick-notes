@@ -1,13 +1,9 @@
 import Controller from "../../utils/Controller";
-import Note from "../Note";
+import NoteContainer from "../NoteContainer";
 
 export default class App extends Controller {
 	constructor(node) {
 		super(node);
-		this.note = new Note(node, {
-			color: "red",
-			title: "blue",
-			content: "sersfs"
-		});
+		this.noteContainer = new NoteContainer(node);
 	}
 }
