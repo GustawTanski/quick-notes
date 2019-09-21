@@ -3,116 +3,115 @@ import axios from "axios";
 class RequestManager {
 	constructor() {
 		this.requester = axios.create({
-			baseURL: "http://localhost:5000"
-			// typeof API_SERVER_URL === "undefined"
-			// 	? "http://localhost:5000"
-			// 	: API_SERVER_URL
+			baseURL: "http://quick-notes-253112.appspot.com"
 		});
 	}
 
 	async postRegisterCredentials(email, password) {
 		try {
-			const response = await this.requester.post(
-				"/register",
-				{},
-				{
+			const { data, status } = await this.requester.post("/register",{},{
 					auth: {
 						username: email,
 						password
 					}
-				}
-			);
-			console.log(response.data);
-			return response.data;
+				});
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data || {};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
 	async postLoginCredentials(email, password) {
 		try {
-			const response = await this.requester.post(
-				"/login",
-				{},
-				{
+			const { data, status } = await this.requester.post("/login",{},{
 					auth: {
 						username: email,
 						password
 					}
-				}
-			);
-
+				});
 			this.requester.defaults.headers.common["x-auth-token"] =
 				response.headers["x-auth-token"];
-
-			console.log(response.data);
-			return response.data;
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data || {};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	logout(){
+	logout() {
 		delete this.requester.defaults.headers.common["x-auth-token"];
 	}
 
-	async getNote(user, noteID) {
+	async getNote(noteID) {
 		try {
-			const response = await this.requester.get(`/${user}/notes/${noteID}`);
-			return response.data;
+			const { data, status } = await this.requester.get(`/notes/${noteID}`);
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data ||{};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async getNotes(user) {
+	async getNotes() {
 		try {
-			const response = await this.requester.get(`/${user}/notes`);
-			if (response.status == "200") return response.data.notes;
+			const { data, status } = await this.requester.get(`/notes`);
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data || {};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async postNote(user, color, message,title) {
+	async postNote(color, message, title) {
 		try {
-			const response = await this.requester.post(`/${user}/notes`, {
+			const { data, status } = await this.requester.post(`/notes`, {
 				color,
 				message,
 				title
 			});
-			return response.data;
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data || {};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async putNote(user, noteID, color, message,title) {
+	async putNote(noteID, color, message, title) {
 		try {
-			const response = await this.requester.put(`/${user}/notes/${noteID}`, {
+			const { data, status } = await this.requester.put(`/notes/${noteID}`, {
 				color,
 				message,
 				title
 			});
-			return response.data;
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data || {};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async deleteNote(user, noteID) {
+	async deleteNote(noteID) {
 		try {
-			const response = await this.requester.delete(`/${user}/notes/${noteID}`);
-			return response.data;
+			const { data, status } = await this.requester.delete(`/notes/${noteID}`);
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data || {});
-			return error.response.data || {};
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 }
