@@ -19,7 +19,7 @@ export default class LoginForm extends Controller {
 		this.view.forgotLink.addEventListener("click", this._redirectToForgotPage);
 	}
 
-	unsetListeners() {
+	removeListeners() {
 		this.view.element.removeEventListener("input", this._updateModel);
 		this.view.element.removeEventListener("submit", this._signIn);
 		this.view.signUpLink.removeEventListener(

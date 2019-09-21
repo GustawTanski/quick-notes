@@ -19,8 +19,7 @@ export default class Controller {
 	removeListeners() {}
 
 	mount() {
-		if (this.view instanceof View) this.node.appendChild(this.view.render());
-		this.setListeners();
+		this.flatMount();
 		for (const i in this) {
 			if (this[i] instanceof Controller) {
 				this[i].mount();
@@ -37,8 +36,13 @@ export default class Controller {
 			}
 		}
 	}
+
+	flatMount() {
+		if (this.view instanceof View) this.node.appendChild(this.view.render());
+		this.setListeners();
+	}
 	init(mountAtInit = true) {
-		if (mountAtInit) this.mount();
+		if (mountAtInit) this.flatMount();
 		for (const i in this) {
 			if (this[i] instanceof Controller) {
 				this[i].init(mountAtInit);
