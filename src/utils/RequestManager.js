@@ -3,16 +3,13 @@ import axios from "axios";
 class RequestManager {
 	constructor() {
 		this.requester = axios.create({
-			baseURL: "http://localhost:5000"
-			// typeof API_SERVER_URL === "undefined"
-			// 	? "http://localhost:5000"
-			// 	: API_SERVER_URL
+			baseURL: "http://quick-notes-253112.appspot.com"
 		});
 	}
 
 	async postRegisterCredentials(email, password) {
 		try {
-			const response = await this.requester.post(
+			const { data, status } = await this.requester.post(
 				"/register",
 				{},
 				{
@@ -22,17 +19,18 @@ class RequestManager {
 					}
 				}
 			);
-			console.log(response.data);
-			return response.data;
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
 	async postLoginCredentials(email, password) {
 		try {
-			const response = await this.requester.post(
+			const { data, status } = await this.requester.post(
 				"/login",
 				{},
 				{
@@ -42,71 +40,86 @@ class RequestManager {
 					}
 				}
 			);
-			if (response.status == "200") {
-				sessionStorage.setItem("jwt", response.headers["x-auth-token"]);
-				this.requester.defaults.headers.common[
-					"x-auth-token"
-				] = sessionStorage.getItem("jwt");
+			this.requester.defaults.headers.common["x-auth-token"] =
+				response.headers["x-auth-token"];
+			return { data, status };
+		} catch (error) {
+			if (error.response) {
+				return error.response;
 			}
-			console.log(response.data);
-			return response.data;
-		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			return error.message;
 		}
 	}
 
-	async getNote(user, noteID) {
+	logout() {
+		delete this.requester.defaults.headers.common["x-auth-token"];
+	}
+
+	async getNote(noteID) {
 		try {
-			const response = await this.requester.get(`/${user}/notes/${noteID}`);
-			return response.data;
+			const { data, status } = await this.requester.get(`/notes/${noteID}`);
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async getNotes(user) {
+	async getNotes() {
 		try {
-			const response = await this.requester.get(`/${user}/notes`);
-			if (response.status == "200") return response.data.notes;
+			const { data, status } = await this.requester.get(`/notes`);
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async postNote(user, noteText) {
+	async postNote(color, message, title) {
 		try {
-			const response = await this.requester.post(`/${user}/notes`, {
-				noteText
+			const { data, status } = await this.requester.post(`/notes`, {
+				color,
+				message,
+				title
 			});
-			return response.data;
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async putNote(user, noteID, noteText) {
+	async putNote(noteID, color, message, title) {
 		try {
-			const response = await this.requester.put(`/${user}/notes/${noteID}`, {
-				noteText
+			const { data, status } = await this.requester.put(`/notes/${noteID}`, {
+				color,
+				message,
+				title
 			});
-			return response.data;
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 
-	async deleteNote(user, noteID) {
+	async deleteNote(noteID) {
 		try {
-			const response = await this.requester.delete(`/${user}/notes/${noteID}`);
-			return response.data;
+			const { data, status } = await this.requester.delete(`/notes/${noteID}`);
+			return { data, status };
 		} catch (error) {
-			console.log(error.response.data);
-			return error.response.data;
+			if (error.response) {
+				return error.response;
+			}
+			return error.message;
 		}
 	}
 }

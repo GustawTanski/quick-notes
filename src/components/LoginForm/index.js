@@ -31,7 +31,7 @@ export default class LoginForm extends Controller {
 			this.model.passwordValue = event.target.value;
 			this.view.setPasswordInputValue(this.model.passwordValue);
 		}
-		console.log(this.model);
+		// console.log(this.model);
 	}
 
 	_signIn(event) {
@@ -48,7 +48,14 @@ export default class LoginForm extends Controller {
 				this.model.passwordValue
 			).then(response => {
 				console.log(response);
-				this.view.showAlert(response);
+
+				if (response.status !== 200) {
+					response.data
+						? this.view.showAlert(response.data)
+						: this.view.showAlert(response);
+				} else {
+					window.location.href = "http://quick-notes-253112.appspot.com/notes";
+				}
 			});
 		}
 	}
