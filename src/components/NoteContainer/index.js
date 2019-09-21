@@ -10,7 +10,7 @@ export default class NoteContainer extends Controller {
 		this.view = new View();
 		this.noteCreator = new NoteCreator(
 			this.view.noteCreatorContainer,
-			this.addNewNote
+			this.updateNotes
 		);
 		this.updateNotes();
 	}
