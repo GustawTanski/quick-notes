@@ -8,6 +8,12 @@ export default class RegisterFormView extends View {
 		this.element = document.createElement("form");
 		this.element.className =
 			"register-form mx-auto col-12 text-center mt-5 border rounded px-2 px-sm-5 py-4 bg-light";
+		this.element.setAttribute("novalidate", "");
+		this.element.setAttribute(
+			"oninput",
+			'confirmPasswordInput.setCustomValidity(confirmPasswordInput.value != passwordInput.value ? "Passwords do not match." : "")'
+		);
+		// Header
 		const header = document.createElement("div");
 		header.innerHTML = `
 		<h3 class="header mb-4 text-center">CREATE ACCOUNT</h3>`;
@@ -17,25 +23,32 @@ export default class RegisterFormView extends View {
         <div class="form-group mb-3">
             <label for="emailInput">Email</label>
 			<input id="emailInput" placeholder="kontakt@coderscrew.pl" type="email" max-length="255" required class="form-control text-center"></input>
+			<div class="invalid-feedback">
+          		Please enter a valid email address.
+			</div>
 		</div>`;
 		this.emailInput = email.querySelector("#emailInput");
 		// Password
 		const password = document.createElement("div");
 		password.innerHTML = `
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="passwordInput">Password</label>
-            <input id="passwordInput" type="password" pattern=".{5,}" maxlength="255" required class="form-control text-center"></input>
+            <input id="passwordInput" name="passwordInput" type="password" pattern=".{5,}" maxlength="255" required class="form-control text-center"></input>
             <small class="form-text text-muted">
                 Password must be at least 5 characters long.
-            </small>
-        </div>`;
+			</small>
+			<div class="invalid-feedback">
+          		Password must be at least 5 characters long.
+			</div>
+		</div>`;
 		this.passwordInput = password.querySelector("#passwordInput");
+		this.smallText = password.querySelector("small");
 		// Confirm password
 		const confirmPassword = document.createElement("div");
 		confirmPassword.innerHTML = `
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="confirmPasswordInput">Confirm Password</label>
-			<input id="confirmPasswordInput" type="password" pattern=".{5,}" maxlength="255" required class="form-control text-center"></input>
+			<input id="confirmPasswordInput" name="confirmPasswordInput" type="password" required class="form-control text-center"></input>
 			<div class="invalid-feedback">
           		Passwords do not match.
 			</div>
@@ -65,6 +78,8 @@ export default class RegisterFormView extends View {
 			registerButton,
 			alreadyRegistered
 		);
+
+		this._customCheckValidity();
 	}
 
 	setEmailInputValue(value) {
@@ -79,24 +94,27 @@ export default class RegisterFormView extends View {
 		this.confirmPasswordInput.value = value;
 	}
 
-	showAlert(message) {
-		const alert = document.createElement("div");
-		alert.className = "alert alert-danger alert-dismissible fade show";
-		alert.role = "alert";
-		alert.innerHTML = `${message}
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		  <span aria-hidden="true">&times;</span>
-		</button>`;
-		this.element.append(alert);
-	}
+	_customCheckValidity() {
+		"use strict";
+		window.addEventListener(
+			"load",
+			function() {
+				const form = document.getElementsByClassName("register-form")[0];
 
-	passwordMatching() {
-		if (
-			document.getElementById("passwordInput").value ==
-			document.getElementById("confirmPasswordInput").value
-		) {
-			//
-		} else {
-		}
+				form.addEventListener(
+					"submit",
+					function(event) {
+						if (!form.checkValidity()) {
+							event.preventDefault();
+							event.stopPropagation();
+							form.emailInput.setAttribute("style", ":valid !important");
+						}
+						form.classList.add("was-validated");
+					},
+					false
+				);
+			},
+			false
+		);
 	}
 }
