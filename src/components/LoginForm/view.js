@@ -31,13 +31,11 @@ export default class LoginFormView extends View {
 
 		const signUpLinkGroup = document.createElement("div");
 		signUpLinkGroup.innerHTML = `
-		<p class="mb-2">Don't have an account yet?<a href="#"> Sign up here!</a></p>`;
-		this.signUpLink = signUpLinkGroup.querySelector("a");
+		<p class="mb-2">Don't have an account yet?<a href="#/register"> Sign up here!</a></p>`;
 
 		const forgotLinkGroup = document.createElement("div");
 		forgotLinkGroup.innerHTML = `
-		<p class="mb-3">Can't remeber password?<a href="#"> Reset it here!</a></p>`;
-		this.forgotLink = forgotLinkGroup.querySelector("a");
+		<p class="mb-3">Can't remeber password?<a href="/forgot"> Reset it here!</a></p>`;
 
 		this.element.append(
 			header,

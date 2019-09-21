@@ -15,21 +15,11 @@ export default class LoginForm extends Controller {
 	setListeners() {
 		this.view.element.addEventListener("input", this._updateModel);
 		this.view.element.addEventListener("submit", this._signIn);
-		this.view.signUpLink.addEventListener("click", this._redirectToSignUpPage);
-		this.view.forgotLink.addEventListener("click", this._redirectToForgotPage);
 	}
 
 	removeListeners() {
 		this.view.element.removeEventListener("input", this._updateModel);
 		this.view.element.removeEventListener("submit", this._signIn);
-		this.view.signUpLink.removeEventListener(
-			"click",
-			this._redirectToSignUpPage
-		);
-		this.view.forgotLink.removeEventListener(
-			"click",
-			this._redirectToForgotPage
-		);
 	}
 
 	_updateModel(event) {
@@ -61,13 +51,5 @@ export default class LoginForm extends Controller {
 				this.view.showAlert(response);
 			});
 		}
-	}
-
-	_redirectToSignUpPage() {
-		console.log("redirecting to sign up page");
-	}
-
-	_redirectToForgotPage() {
-		console.log("redirecting to forgot page");
 	}
 }
