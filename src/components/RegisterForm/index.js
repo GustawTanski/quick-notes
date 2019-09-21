@@ -1,6 +1,7 @@
 import Controller from "../../utils/Controller";
 import Model from "./model";
 import View from "./view";
+//import RequestManager from "../../utils/RequestManager";
 
 export default class RegisterForm extends Controller {
 	constructor(node) {
@@ -14,9 +15,9 @@ export default class RegisterForm extends Controller {
 			this._updateModel(event)
 		);
 
-		this.view.element.addEventListener("submit", event =>
+		/*this.view.element.addEventListener("submit", event =>
 			this._register(event)
-		);
+		);*/
 	}
 
 	_updateModel(event) {
@@ -34,8 +35,16 @@ export default class RegisterForm extends Controller {
 			this.view.passwordMatching();
 		}
 	}
-
-	_register(event) {
-		//
-	}
+	/*
+		_register(event) {
+			event.preventDefault();
+			if (!this.model.email || !this.model.password) {
+				console.log("Please enter email and password.");
+			} else {
+				RequestManager.postRegisterCredentials(
+					this.model.email,
+					this.model.password
+				).then(response => console.log(response));
+			}
+		}*/
 }
