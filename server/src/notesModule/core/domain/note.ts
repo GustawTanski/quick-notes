@@ -1,27 +1,29 @@
 import "reflect-metadata";
 import * as jf from "joiful";
+import Color from "./color";
+import { $enum } from "ts-enum-util";
 
 export default class Note{
     @jf.string()
-    noteId?: string = undefined;
+    noteId?: string;
 
     @jf.string().required().min(1)
-    authorId: string = "";
+    authorId: string;
     
     @jf.string().required().min(1)
-    title: string = "";
+    title: string;
 
     @jf.string().required().min(3)
-    content: string = "";
+    content: string;
 
-    @jf.string().required().pattern(new RegExp("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"))
-    color: string = "";
+    @jf.string().required().valid($enum(Color).getKeys())
+    color: keyof typeof Color;
 
     /**
      * A cloning constructor that assigns all required atributes based on the object provided
      * @param base an object to be cloned
      */
-    constructor(base: Note/*noteId:string|undefined,author:string|undefined,content:string|undefined*/){
+    constructor(base: Note){
         const { error } = jf.validateAsClass(base, Note);
         if(error){
             throw new Error(error.details[0].message);

@@ -5,8 +5,6 @@ import NoteServicePort from "../core/noteServicePort";
 import NewNoteDto from "./models/newNoteDto";
 import { validate, validateAsClass } from "joiful";
 import NoteDtoMapper from "./models/mappers/noteDtoMapper";
-import { object } from "joi";
-import { string } from "@hapi/joi";
 import auth from "../../middlewares/auth";
 
 export default class RestInterface{

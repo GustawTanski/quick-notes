@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import * as jf from "joiful";
+import { $enum } from "ts-enum-util";
+import Color from "../../core/domain/color";
 
 export default class NewNoteDto{
     @jf.string().required().min(1)
@@ -8,6 +10,6 @@ export default class NewNoteDto{
     @jf.string().required().min(3)
     content: string = "";
 
-    @jf.string().required().pattern(new RegExp("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"))
-    color: string = "";
+    @jf.string().required().valid($enum(Color).getKeys())
+    color?: keyof typeof Color = undefined;
 }
