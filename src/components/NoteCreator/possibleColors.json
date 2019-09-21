@@ -1,38 +1,23 @@
 [
-	{
-		"colorName": "primary",
-		"fontColor": "text-white"
-	},
-	{
-		"colorName": "secondary",
-		"fontColor": "text-white"
-	},
-	{
-		"colorName": "success",
-		"fontColor": "text-white"
-	},
-	{
-		"colorName": "info",
-		"fontColor": "text-white"
-	},
-	{
-		"colorName": "warning",
-		"fontColor": "text-dark"
-	},
-	{
-		"colorName": "danger",
-		"fontColor": "text-white"
-	},
-	{
-		"colorName": "light",
-		"fontColor": "text-dark"
-	},
-	{
-		"colorName": "dark",
-		"fontColor": "text-white"
-	},
-	{
-		"colorName": "white",
-		"fontColor": "text-dark"
-	}
+	"blue",
+	"indigo",
+	"purple",
+	"pink",
+	"red",
+	"orange",
+	"yellow",
+	"green",
+	"teal",
+	"cyan",
+	"white",
+	"gray",
+	"gray-dark",
+	"primary",
+	"secondary",
+	"success",
+	"info",
+	"warning",
+	"danger",
+	"light",
+	"dark"
 ]

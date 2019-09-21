@@ -1,77 +1,132 @@
 import Controller from "../../utils/Controller";
 import View from "./view";
 import Model from "./model";
-import { conditionalExpression } from "@babel/types";
 
-/* Warstwa funkcjonalna, backend pod frontem */
 export default class NoteCreator extends Controller {
-	constructor(node, callback) {
+	constructor(node, model, callback) {
 		super(node);
 
 		this.model = new Model();
-		this.view = new View();
-		window.addEventListener("DOMContentLoaded", this._initListeners.bind(this));
-
-		//only for production use
-		window.addEventListener("DOMContentLoaded", () => {
-			this.view.element.querySelector("#" + this.view.noteTitleInputID).value =
-				"Sample title";
-			this.view.element.querySelector(
-				"#" + this.view.noteMessageInputID
-			).value = "Sample message";
-		});
+		this.view = new View(this.model);
 	}
 
-	_initListeners(event) {
-		const formElement = this.view.element;
-
-		formElement.addEventListener(
+	setListeners(event) {
+		this.view.element.addEventListener(
 			"submit",
 			this.submitFormEventListener.bind(this)
 		);
 
-		if (document.readyState !== "loading") {
-			const dropdownItemsArray = this.view.element.querySelectorAll(
-				"option.dropdown-item"
+		this.view.element.querySelectorAll("option.btn").forEach(element => {
+			element.addEventListener("click", this.userSelectedNewColor.bind(this));
+		});
+
+		document
+			.querySelector("#" + this.view.noteTitleInputID)
+			.addEventListener(
+				"change",
+				this.onChangeUpdateModelEventListener.bind(this)
 			);
 
-			dropdownItemsArray.forEach(element => {
-				element.addEventListener("click", this.userSelectedNewColor.bind(this));
-			});
+		document
+			.querySelector("#" + this.view.noteTitleInputID)
+			.addEventListener(
+				"focus",
+				this.hideFeedbackOnFocusEventListener.bind(this)
+			);
+
+		document
+			.querySelector("#" + this.view.noteMessageInputID)
+			.addEventListener(
+				"change",
+				this.onChangeUpdateModelEventListener.bind(this)
+			);
+
+		document
+			.querySelector("#" + this.view.noteMessageInputID)
+			.addEventListener(
+				"focus",
+				this.hideFeedbackOnFocusEventListener.bind(this)
+			);
+
+		document
+			.querySelector("#" + this.view.noteColorInputID)
+			.addEventListener(
+				"focus",
+				this.hideFeedbackOnFocusEventListener.bind(this)
+			);
+	}
+
+	removeListeners() {
+		document
+			.querySelector("#" + this.view.noteColorInputID)
+			.removeEventListener("focus", this.hideFeedbackOnFocusEventListener);
+
+		document
+			.querySelector("#" + this.view.noteMessageInputID)
+			.removeEventListener("focus", this.hideFeedbackOnFocusEventListener);
+
+		document
+			.querySelector("#" + this.view.noteTitleInputID)
+			.removeChild("focus", this.hideFeedbackOnFocusEventListener);
+
+		this.view.element.querySelectorAll("option.btn").forEach(element => {
+			element.removeEventListener("click", this.userSelectedNewColor);
+		});
+
+		document
+			.querySelector("#" + this.view.noteTitleInputID)
+			.removeEventListener("change", this.onChangeUpdateModelEventListener);
+
+		document
+			.querySelector("#" + this.view.noteMessageInputID)
+			.removeEventListener("change", this.onChangeUpdateModelEventListener);
+
+		this.view.element.removeEventListener(
+			"submit",
+			this.submitFormEventListener
+		);
+	}
+
+	hideFeedbackOnFocusEventListener(event) {
+		event.target.parentElement.lastChild.style.display = "none";
+	}
+
+	dropDownActiveEventListener(event) {
+		if (event.target.previousSibling.classList.contains("show")) {
+			event.target.previousSibling.style.display = "flex";
+		} else {
+			event.target.previousSibling.style.display = "none";
 		}
+	}
+
+	onChangeUpdateModelEventListener(event) {
+		event.stopPropagation();
+		event.preventDefault();
+		const text = event.target.value;
+		this.model[`${event.target.name}`] = text;
 	}
 
 	submitFormEventListener(event) {
 		event.preventDefault();
+		this.view.hideFeedback();
 
-		let titleQuerySelector = "#" + this.view.noteTitleInputID;
-		const noteTitle = this.view.element.querySelector(titleQuerySelector);
+		let validation = this.model.validate();
 
-		let messageQuerySelector = "#" + this.view.noteMessageInputID;
-		const noteMessage = this.view.element.querySelector(messageQuerySelector);
-
-		const noteColor = this.model.color;
-
-		const newNote = {
-			title: noteTitle.value,
-			message: noteMessage.value,
-			color: noteColor
-		};
-
-		console.log(newNote);
-
-		//TODO sending new note
+		if (validation) {
+			// TODO send note
+		} else {
+			this.view.showFeedback(this.model);
+		}
 	}
 
 	userSelectedNewColor(event) {
-		let button = document.querySelector("#" + this.view.noteColorInputID);
+		let button = this.view.noteColorSelectorGroup.querySelector(
+			".dropdown-toggle"
+		);
 
-		button.classList = event.target.classList;
-		button.classList.replace("dropdown-item", "dropdown-toggle");
-		button.innerText = event.target.value;
+		button.style.backgroundColor = event.target.style.backgroundColor;
+		button.style.color = event.target.style.color;
 
 		this.model.color = event.target.value;
 	}
-
-	//TODO unmount listeners
 }
