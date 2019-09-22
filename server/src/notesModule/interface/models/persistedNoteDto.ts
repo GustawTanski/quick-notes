@@ -1,13 +1,9 @@
-import "reflect-metadata";
-import * as jf from "joiful";
+import Color from "../../core/domain/color";
 
 export default class PersistedNoteDto{
-    @jf.string()
     noteId: string = "";
-
-    @jf.string().required().min(1)
     authorId: string = "";
-    
-    @jf.string().required().min(3)
+    title: string = "";
     content: string = "";
+    color?: keyof typeof Color = undefined;
 }

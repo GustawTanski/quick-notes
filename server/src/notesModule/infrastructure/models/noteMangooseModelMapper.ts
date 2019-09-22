@@ -14,13 +14,14 @@ export default class NoteMangooseModelMapper{
         this.schema = new Schema({},{strict: false});
         this.NoteMongooseModel = mongoose.model<NoteMongooseModelInterface>("Note",this.schema);
 
-        automapper.createMap("Note","MongooseNote").forMember(
-            "_id",(opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.mapFrom('noteId'); }
+        automapper.createMap("Note","MongooseNote")
+            .forMember("_id",(opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.mapFrom('noteId'); }
         );
 
-        automapper.createMap("MongooseNote","Note").forMember(
-            "noteId",(opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.mapFrom('_id'); }
-        );
+        automapper.createMap("MongooseNote","Note")
+            .forMember("noteId", (opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.mapFrom('_id'); })
+            .forMember("noteId", (opts: AutoMapperJs.IMemberConfigurationOptions) => { return String(opts.sourceObject[opts.sourcePropertyName]); })
+            .forMember("__v", (opts: AutoMapperJs.IMemberConfigurationOptions) => { opts.ignore(); });
     }
 
     noteToMongooseModel(note: Note): NoteMongooseModelInterface{
@@ -30,6 +31,7 @@ export default class NoteMangooseModelMapper{
 
     mongooseModelToNote(mongooseModel: NoteMongooseModelInterface): Note{
         let automapperOutput = automapper.map("MongooseNote","Note",mongooseModel.toObject());
+        //automapperOutput.noteId = String(automapperOutput.noteId);
         return new Note(automapperOutput);
     }
 }

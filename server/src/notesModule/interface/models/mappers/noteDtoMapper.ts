@@ -10,15 +10,19 @@ export default class NoteDtoMapper{
         automapper.createMap("Note","PersistedNoteDto").convertToType(PersistedNoteDto);
     }
 
-    noteToPersistedNoteDto(note: Note): NewNoteDto{
-        return automapper.map("Note","NoteDto",note);
+    noteToPersistedNoteDto(note: Note): PersistedNoteDto{
+        return automapper.map("Note","PersistedNoteDto",note);
     }
 
-    newNoteDtoToNote(dto: NewNoteDto): Note{
-        return new Note(automapper.map("NewNoteDto","Note",dto));
+    newNoteDtoToNote(dto: NewNoteDto, authorId: string): Note{
+        const automapped = automapper.map("NewNoteDto","Note",dto);
+        automapped.authorId = authorId;
+        return new Note(automapped);
     }
 
-    persistedNoteDtoToNote(dto: PersistedNoteDto): Note{
-        return new Note(automapper.map("PersistedNoteDto","Note",dto));
-    }
+    /*persistedNoteDtoToNote(dto: PersistedNoteDto, authorId: string): Note{
+        const automapped = automapper.map("PersistedNoteDto","Note",dto);
+        automapped.authorId = authorId;
+        return new Note(automapped);
+    }*/
 }

@@ -53,6 +53,7 @@
     "popper.js": "^1.15.0",
     "pug": "^2.0.4",
     "reflect-metadata": "^0.1.13",
+    "ts-enum-util": "^4.0.1",
     "typescript": "^3.6.3"
   },
   "devDependencies": {

@@ -1,9 +1,11 @@
 import express, { Router, Request, Response, NextFunction } from "express";
 import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
 import NoteServicePort from "../core/noteServicePort";
 import NewNoteDto from "./models/newNoteDto";
 import { validate, validateAsClass } from "joiful";
 import NoteDtoMapper from "./models/mappers/noteDtoMapper";
+import auth from "../../middlewares/auth";
 
 export default class RestInterface{
     private _router: Router;
@@ -13,6 +15,7 @@ export default class RestInterface{
         this._router = express.Router();
         this._noteMapper = new NoteDtoMapper();
 
+        this.router.use(auth);
         this.router.use(express.json());
 
         this.router.get('/notes', asyncHandler(async (req, res, next) => {
@@ -35,13 +38,15 @@ export default class RestInterface{
 
         this.router.post('/notes', asyncHandler(async (req, res, next) => {
             let noteDto: NewNoteDto = req.body;
-            const { error, value } = validateAsClass(noteDto, NewNoteDto);
+            let userId = this.extractUserId(req);
+            const { error } = validateAsClass(noteDto, NewNoteDto);
             if(error){
                 throw new Error(error.details[0].message);
             }
             else{
-                let newNote = await noteService.saveNote(this._noteMapper.newNoteDtoToNote(req.body));
-                res.status(200).send(newNote);
+                let newNote = await noteService.saveNote(this._noteMapper.newNoteDtoToNote(noteDto, userId));
+                let noteResponse = this._noteMapper.noteToPersistedNoteDto(newNote);
+                res.status(200).send(noteResponse);
             }
         }));
 
@@ -76,6 +81,20 @@ export default class RestInterface{
     }
 
     extractUserId(req: Request): string {
-        return "TestAuthor"
+        const jwtKey = process.env.JWT_SECRET;
+        if(!jwtKey){ throw new Error("Server configuration error");}
+
+        let userId;
+        const token = req.header("x-auth-token");
+        if(token && typeof token === "string"){
+            const decoded = jwt.verify(token,jwtKey) as { _id:string };
+            userId = decoded._id;
+        }
+        if(userId) {
+            return userId;
+        }
+        else{
+            throw new Error("Invalid authentication token, can't identify user");
+        }
     }
 }
