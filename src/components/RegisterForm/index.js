@@ -1,26 +1,31 @@
 import Controller from "../../utils/Controller";
 import Model from "./model";
 import View from "./view";
-//import RequestManager from "../../utils/RequestManager";
+import RequestManager from "../../utils/RequestManager";
 
 export default class RegisterForm extends Controller {
 	constructor(node) {
 		super(node);
 		this.model = new Model();
 		this.view = new View();
+		this._updateModel = this._updateModel.bind(this);
+		this._onSubmit = this._onSubmit.bind(this);
+		this._register = this._register.bind(this);
 	}
 
 	setListeners() {
-		this.view.element.addEventListener("input", event =>
-			this._updateModel(event)
-		);
+		this.view.element.addEventListener("input", this._updateModel);
+		this.view.element.addEventListener("submit", this._onSubmit, false);
+	}
 
-		/*this.view.element.addEventListener("submit", event =>
-			this._register(event)
-		);*/
+	removeListeners() {
+		this.view.element.removeEventListener("input", this._updateModel);
+		this.view.element.removeEventListener("submit", this._onSubmit);
 	}
 
 	_updateModel(event) {
+		event.preventDefault();
+		console.log(this.model);
 		if (event.target === this.view.emailInput) {
 			this.model.email = event.target.value;
 			this.view.setEmailInputValue(this.model.email);
@@ -32,19 +37,35 @@ export default class RegisterForm extends Controller {
 		if (event.target === this.view.confirmPasswordInput) {
 			this.model.confirmPassword = event.target.value;
 			this.view.setConfirmPasswordInputValue(this.model.confirmPassword);
-			this.view.passwordMatching();
 		}
 	}
-	/*
-		_register(event) {
-			event.preventDefault();
-			if (!this.model.email || !this.model.password) {
-				console.log("Please enter email and password.");
+
+	_onSubmit(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		if (this.view.element.checkValidity()) {
+			this._register(event);
+		}
+		this.view.element.classList.add("was-validated");
+	}
+
+	_register(event) {
+		event.preventDefault();
+		console.log("registration");
+		this.view.showPleaseWait();
+		RequestManager.postRegisterCredentials(
+			this.model.email,
+			this.model.password
+		).then(response => {
+			console.log(response);
+			if (response.status !== 200) {
+				response.data
+					? this.view.showAlert(response.data)
+					: this.view.showAlert(response);
 			} else {
-				RequestManager.postRegisterCredentials(
-					this.model.email,
-					this.model.password
-				).then(response => console.log(response));
+				this.view.showSuccessAlert();
 			}
-		}*/
+			this.view.hidePleaseWait();
+		});
+	}
 }

@@ -1,5 +1,5 @@
 import View from "../../utils/View";
-import "../../styles/RegisterForm.css";
+import "./style.css";
 
 export default class RegisterFormView extends View {
 	constructor() {
@@ -61,6 +61,7 @@ export default class RegisterFormView extends View {
 		const registerButton = document.createElement("div");
 		registerButton.innerHTML = `
 		<button type="submit" class="btn btn-primary btn-block mb-2">Register</button>`;
+		this.button = registerButton.querySelector("button");
 		// Redirect to login
 		const alreadyRegistered = document.createElement("div");
 		alreadyRegistered.innerHTML = `
@@ -78,8 +79,6 @@ export default class RegisterFormView extends View {
 			registerButton,
 			alreadyRegistered
 		);
-
-		this._customCheckValidity();
 	}
 
 	setEmailInputValue(value) {
@@ -94,27 +93,35 @@ export default class RegisterFormView extends View {
 		this.confirmPasswordInput.value = value;
 	}
 
-	_customCheckValidity() {
-		"use strict";
-		window.addEventListener(
-			"load",
-			function() {
-				const form = document.getElementsByClassName("register-form")[0];
+	showPleaseWait() {
+		this.button.innerText = "Please wait...";
+	}
 
-				form.addEventListener(
-					"submit",
-					function(event) {
-						if (!form.checkValidity()) {
-							event.preventDefault();
-							event.stopPropagation();
-							form.emailInput.setAttribute("style", ":valid !important");
-						}
-						form.classList.add("was-validated");
-					},
-					false
-				);
-			},
-			false
-		);
+	hidePleaseWait() {
+		this.button.innerText = "Register";
+	}
+
+	showAlert(message) {
+		const alert = document.createElement("div");
+		alert.className = "alert alert-danger alert-dismissible fade show mt-3";
+		alert.role = "alert";
+		alert.innerHTML = `${message}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		  <span aria-hidden="true">&times;</span>
+		</button>`;
+		this.element.append(alert);
+	}
+
+	showSuccessAlert() {
+		const alert = document.createElement("div");
+		alert.className = "alert alert-success alert-dismissible fade show mt-3";
+		alert.role = "alert";
+		alert.innerHTML = `
+		<h4>You've been successfully registered!</h4>
+		<p>Check your email and verify your account.</p>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		  <span aria-hidden="true">&times;</span>
+		</button>`;
+		this.element.append(alert);
 	}
 }
