@@ -41,6 +41,7 @@ export default class LoginForm extends Controller {
 	_signIn(event) {
 		event.preventDefault();
 		if (this.model.isEmailValid && this.model.isPasswordValid) {
+			this.view.showPleaseWait();
 			RequestManager.postLoginCredentials(
 				this.model.emailValue,
 				this.model.passwordValue
@@ -54,6 +55,7 @@ export default class LoginForm extends Controller {
 				} else {
 					window.location.href = "#/notes";
 				}
+				this.view.hidePleaseWait();
 			});
 		}
 	}

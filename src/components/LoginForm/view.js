@@ -33,6 +33,7 @@ export default class LoginFormView extends View {
 		const submitGroup = document.createElement("div");
 		submitGroup.innerHTML = `
 		<button type='submit' class="btn btn-primary btn-block mb-2">Sign in</button>`;
+		this.submitButton = submitGroup.querySelector(".btn");
 
 		const signUpLinkGroup = document.createElement("div");
 		signUpLinkGroup.innerHTML = `
@@ -80,6 +81,14 @@ export default class LoginFormView extends View {
 		} else {
 			this.passwordInput.classList.add("is-invalid");
 		}
+	}
+
+	showPleaseWait() {
+		this.submitButton.innerText = "Please wait...";
+	}
+
+	hidePleaseWait() {
+		this.submitButton.innerText = "Sign in";
 	}
 
 	showAlert(message) {
