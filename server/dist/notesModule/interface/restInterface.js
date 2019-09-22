@@ -51,8 +51,8 @@ var RestInterface = /** @class */ (function () {
         var _this = this;
         this._router = express_1.default.Router();
         this._noteMapper = new noteDtoMapper_1.default();
-        this.router.use(auth_1.default);
-        this.router.use(express_1.default.json());
+        this.router.use('/notes', auth_1.default);
+        this.router.use('/notes', express_1.default.json());
         this.router.get('/notes', express_async_handler_1.default(function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
             var userId, notes;
             return __generator(this, function (_a) {
@@ -131,7 +131,7 @@ var RestInterface = /** @class */ (function () {
          * Error handler route.
          * TODO: throw better errors and handle them based on their type
          */
-        this.router.use(function (error, req, res, next) {
+        this.router.use('/notes', function (error, req, res, next) {
             if (error) {
                 res.status(500).send(error.message);
             }
