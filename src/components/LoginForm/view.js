@@ -8,21 +8,26 @@ export default class LoginFormView extends View {
 		this.element.className =
 			"register-form mx-auto col-12 text-center mt-5 border rounded px-2 px-sm-5 py-4 bg-light";
 		this.element.style.width = "576px";
+		this.element.setAttribute("novalidate", "");
 
 		const header = document.createElement("div");
 		header.innerHTML = `
 		<h3 class="header mb-4 text-center">LOGIN</h3>`;
 
 		const emailGroup = document.createElement("div");
+		emailGroup.className = "mb-3";
 		emailGroup.innerHTML = `
 		<label for="emailInput" >Email</label>
-		<input placeholder='email' type ="email" maxlength="255" required id="emailInput" class="form-control text-center mb-3">`;
+		<input placeholder='email' type ="email" maxlength="255" required id="emailInput" class="form-control text-center">
+		<div class="invalid-feedback">Please provide a valid email.</div>`;
 		this.emailInput = emailGroup.querySelector(".form-control");
 
 		const passwordGroup = document.createElement("div");
+		passwordGroup.className = "mb-3";
 		passwordGroup.innerHTML = `
 		<label for="passwordInput">Password</label>
-		<input placeholder='password' type ="password" pattern=".{5,}" required title="5 characters minimum" maxlength="255" id="passwordInput" class="form-control text-center mb-3">`;
+		<input placeholder='password' type ="password" pattern=".{5,}" required  maxlength="255" id="passwordInput" class="form-control text-center">
+		<div class="invalid-feedback">Password must be at least 5 characters long.</div>`;
 		this.passwordInput = passwordGroup.querySelector(".form-control");
 
 		const submitGroup = document.createElement("div");
@@ -53,6 +58,28 @@ export default class LoginFormView extends View {
 
 	setPasswordInputValue(value) {
 		this.passwordInput.value = value;
+	}
+
+	showEmailValidity(isValid) {
+		if (isValid) {
+			if (this.emailInput.classList.contains("is-invalid")) {
+				this.emailInput.classList.remove("is-invalid");
+			}
+			this.emailInput.classList.add("is-valid");
+		} else {
+			this.emailInput.classList.add("is-invalid");
+		}
+	}
+
+	showPasswordValidity(isValid) {
+		if (isValid) {
+			if (this.passwordInput.classList.contains("is-invalid")) {
+				this.passwordInput.classList.remove("is-invalid");
+			}
+			this.passwordInput.classList.add("is-valid");
+		} else {
+			this.passwordInput.classList.add("is-invalid");
+		}
 	}
 
 	showAlert(message) {

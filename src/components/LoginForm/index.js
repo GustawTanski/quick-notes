@@ -23,26 +23,24 @@ export default class LoginForm extends Controller {
 	}
 
 	_updateModel(event) {
+		event.preventDefault();
 		if (event.target === this.view.emailInput) {
 			this.model.emailValue = event.target.value;
 			this.view.setEmailInputValue(this.model.emailValue);
+			this.model.isEmailValid = this.view.emailInput.checkValidity();
+			this.view.showEmailValidity(this.model.isEmailValid);
 		}
 		if (event.target === this.view.passwordInput) {
 			this.model.passwordValue = event.target.value;
 			this.view.setPasswordInputValue(this.model.passwordValue);
+			this.model.isPasswordValid = this.view.passwordInput.checkValidity();
+			this.view.showPasswordValidity(this.model.isPasswordValid);
 		}
-		// console.log(this.model);
 	}
 
 	_signIn(event) {
 		event.preventDefault();
-		if (!this.model.emailValue || !this.model.passwordValue) {
-			console.log("please enter email and password");
-		} else {
-			console.log(
-				`logging in with email ${this.model.emailValue} and password ${this.model.passwordValue}`
-			);
-
+		if (this.model.isEmailValid && this.model.isPasswordValid) {
 			RequestManager.postLoginCredentials(
 				this.model.emailValue,
 				this.model.passwordValue
