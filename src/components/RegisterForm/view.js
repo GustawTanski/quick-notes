@@ -124,4 +124,11 @@ export default class RegisterFormView extends View {
 		</button>`;
 		this.element.append(alert);
 	}
+
+	removePreviousAlerts() {
+		const alert = this.element.querySelector(".alert");
+		if (alert) {
+			alert.remove();
+		}
+	}
 }

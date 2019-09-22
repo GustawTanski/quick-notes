@@ -3,6 +3,5 @@ export default class RegisterFormModel {
 		this.email;
 		this.password;
 		this.confirmPassword;
-		this.isValid;
 	}
 }

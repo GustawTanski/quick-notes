@@ -51,6 +51,7 @@ export default class RegisterForm extends Controller {
 	_register(event) {
 		event.preventDefault();
 		this.view.showPleaseWait();
+		this.view.removePreviousAlerts();
 		RequestManager.postRegisterCredentials(
 			this.model.email,
 			this.model.password
