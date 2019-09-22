@@ -5,24 +5,21 @@ export default class NoteCreatorView extends View {
 	constructor(model) {
 		super();
 
-		this.element = document.createElement("form");
-		this.element.classList.add("container");
-		this.element.autocomplete = "off";
+		this._initElement();
 
 		this.noteTitleGroup = this._noteTitleDOMCreator();
 		this.noteBodyGroup = this._noteBodyDOMCreator();
 		this.noteColorSelectorGroup = this._noteColorSelectorDOMCreator();
 		this.noteButtonGroup = this._noteSubmitButtonDOMCreator();
-		this.isColorSelectorGroupShown = false;
 
-		this.children.push(
-			this.noteTitleGroup,
-			this.noteBodyGroup,
-			this.noteColorSelectorGroup,
-			this.noteButtonGroup
-		);
+		this.dropdownDiv = this._dropdownForm();
 
-		this.setViewValues(model);
+		this.dropdownDiv.appendChild(this.noteTitleGroup);
+		this.dropdownDiv.appendChild(this.noteBodyGroup);
+		this.dropdownDiv.appendChild(this.noteColorSelectorGroup);
+		this.dropdownDiv.appendChild(this.noteButtonGroup);
+
+		this.children.push(this.dropdownDiv);
 	}
 
 	get noteTitleInputID() {
@@ -33,8 +30,12 @@ export default class NoteCreatorView extends View {
 		return "noteCreatorMessageInput";
 	}
 
-	get noteColorInputID() {
+	get formID() {
 		return "dropdownColorSelector";
+	}
+
+	get noteCreatorID() {
+		return "noteCreatorID";
 	}
 
 	_getColorsFromFile() {
@@ -54,6 +55,26 @@ export default class NoteCreatorView extends View {
 		}
 
 		return stringHTML;
+	}
+
+	_dropdownForm() {
+		let div = document.createElement("div");
+		div.style.padding = "5px";
+		div.style.maxHeight = "80px";
+		div.style.overflow = "hidden";
+		div.style.transition = "all .3s ease";
+
+		return div;
+	}
+
+	_initElement() {
+		this.element = document.createElement("form");
+		this.element.classList.add("container");
+		this.element.id = this.formID;
+		this.element.style.border = "1px solid gainsboro";
+		this.element.style.padding = "10px 20px";
+		this.element.style.borderRadius = "5px";
+		this.element.autocomplete = "off";
 	}
 
 	_noteTitleDOMCreator() {
@@ -116,13 +137,16 @@ export default class NoteCreatorView extends View {
 		button.classList.add("btn", "dropdown-toggle");
 		button.style.backgroundColor = "var(--secondary)";
 		button.style.border = "2px solid hsla(207, 8%, 45%, 0.2)";
+		button.style.width = "100%";
+		button.style.color = "var(--light)";
+		button.style.textAlign = "center";
 		button.type = "button";
-		button.setAttribute("id", this.noteColorInputID);
+		button.setAttribute("id", this.formID);
 		button.setAttribute("data-toggle", "dropdown");
 		button.innerText = "Note Color";
 
 		const dropdownDiv = document.createElement("div");
-		dropdownDiv.setAttribute("aria-labelledby", this.noteColorInputID);
+		dropdownDiv.setAttribute("aria-labelledby", this.formID);
 		dropdownDiv.classList.add("dropdown-menu");
 		dropdownDiv.style.flexWrap = "wrap";
 		dropdownDiv.style.justifyContent = "space-between";
@@ -157,12 +181,18 @@ export default class NoteCreatorView extends View {
 
 	setViewValues(model) {
 		if (model.title !== "" && model.message !== "" && model.color !== "") {
-			this.noteTitleGroup.lastChild.value = model.title;
+			this.noteTitleGroup.querySelector("#" + this.noteTitleInputID).value =
+				model.title;
 
-			this.noteBodyGroup.lastChild.value = model.message;
+			this.noteBodyGroup.querySelector("#" + this.noteMessageInputID).value =
+				model.message;
 
-			this.noteColorSelectorGroup.lastChild.style.backgroundColor = `var(--${model.color})`;
-			this.noteColorSelectorGroup.lastChild.style.color = `var(--${model.color})`;
+			this.noteColorSelectorGroup.querySelector(
+				".dropdown-toggle"
+			).style.backgroundColor = `var(--${model.color})`;
+			this.noteColorSelectorGroup.querySelector(
+				".dropdown-toggle"
+			).style.color = `var(--${model.color})`;
 		}
 	}
 

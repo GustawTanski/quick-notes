@@ -3,11 +3,13 @@ import View from "./view";
 import Model from "./model";
 
 export default class NoteCreator extends Controller {
-	constructor(node, model, callback) {
+	constructor(node, model) {
 		super(node);
 
-		this.model = new Model();
+		this.model = new Model(model);
 		this.view = new View(this.model);
+
+		this.view.setViewValues(this.model);
 	}
 
 	setListeners(event) {
@@ -49,16 +51,28 @@ export default class NoteCreator extends Controller {
 			);
 
 		document
-			.querySelector("#" + this.view.noteColorInputID)
+			.querySelector("#" + this.view.formID)
 			.addEventListener(
 				"focus",
 				this.hideFeedbackOnFocusEventListener.bind(this)
 			);
+
+		document
+			.querySelector("#" + this.view.noteTitleInputID)
+			.addEventListener("focus", this.onTitleFocusIn.bind(this));
+
+		document.addEventListener("click", this.onFormFocusOut.bind(this));
 	}
 
 	removeListeners() {
+		document.removeEventListener("click", this.onFormFocusOut);
+
 		document
-			.querySelector("#" + this.view.noteColorInputID)
+			.querySelector("#" + this.view.noteTitleInputID)
+			.removeEventListener("focus", this.onTitleFocusIn);
+
+		document
+			.querySelector("#" + this.view.formID)
 			.removeEventListener("focus", this.hideFeedbackOnFocusEventListener);
 
 		document
@@ -91,14 +105,6 @@ export default class NoteCreator extends Controller {
 		event.target.parentElement.lastChild.style.display = "none";
 	}
 
-	dropDownActiveEventListener(event) {
-		if (event.target.previousSibling.classList.contains("show")) {
-			event.target.previousSibling.style.display = "flex";
-		} else {
-			event.target.previousSibling.style.display = "none";
-		}
-	}
-
 	onChangeUpdateModelEventListener(event) {
 		event.stopPropagation();
 		event.preventDefault();
@@ -128,5 +134,19 @@ export default class NoteCreator extends Controller {
 		button.style.color = event.target.style.color;
 
 		this.model.color = event.target.value;
+	}
+
+	onTitleFocusIn(event) {
+		this.view.dropdownDiv.style.maxHeight = `${this.view.dropdownDiv.scrollHeight}px`;
+		setTimeout(() => {
+			this.view.dropdownDiv.style.overflow = "unset";
+		}, 350);
+	}
+	onFormFocusOut(event) {
+		if (!event.path.some(element => element == this.view.element)) {
+			this.view.dropdownDiv.style.maxHeight = `${this.view.noteTitleGroup
+				.scrollHeight + 10}px`;
+			this.view.dropdownDiv.style.overflow = "hidden";
+		}
 	}
 }

@@ -14,9 +14,13 @@ export default class NoteCreatorModel {
 	}
 
 	set configurationObject(config) {
-		if ("title" in config && "message" in config && "color" in config) {
+		if ("title" in config && "content" in config && "color" in config) {
 			if (possibleColor.some(color => color == config.color)) {
-				this._config = config;
+				this._config = {
+					title: config.title,
+					message: config.content,
+					color: config.color
+				};
 			} else {
 				throw TypeError("Invalid color value");
 			}
