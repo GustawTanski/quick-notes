@@ -105,16 +105,15 @@ export default class NoteCreator extends Controller {
 				this.model.title
 			)
 				.then(result => {
-					this.view.notePostingResultDiv(true, "Succesfully added note!");
+					if (result.status === 200) {
+						this.view.notePostingResultDiv(true, "Succesfully added note!");
+					} else {
+						this.view.notePostingResultDiv(false, result.data);
+					}
 				})
 				.catch(error => {
-					console.log(error);
-					this.view.notePostingResultDiv(
-						false,
-						`${error.statusText}: ${error.data}`
-					);
+					this.view.notePostingResultDiv(false, error);
 				});
-			document.focus;
 		} else {
 			this.view.showFeedback(this.model);
 		}
