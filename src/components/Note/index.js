@@ -2,6 +2,7 @@ import Controller from "../../utils/Controller";
 import Model from "./model";
 import View from "./view";
 import RequestManager from "../../utils/RequestManager";
+import Confirm from "../Confirm";
 
 export default class Note extends Controller {
 	constructor(node, config, onDelete) {
@@ -10,12 +11,12 @@ export default class Note extends Controller {
 		this.view = new View(this.model.config);
 		this._onCrossButtonClicked = this._onCrossButtonClicked.bind(this);
 		this._onDelete = onDelete;
+		this.confirm = new Confirm(node, "Are you sure?");
 	}
 
 	async _onCrossButtonClicked() {
 		const { config } = this.model;
-		console.log(config);
-		if (confirm("Are you sure?")) {
+		if (await this.confirm.ask()) {
 			try {
 				const res = await RequestManager.deleteNote(
 					config.authorId,
