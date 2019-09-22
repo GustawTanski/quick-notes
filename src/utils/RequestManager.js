@@ -5,6 +5,19 @@ class RequestManager {
 		this.requester = axios.create({
 			baseURL: "http://quick-notes-253112.appspot.com"
 		});
+		this._setTokenInHeader();
+	}
+
+	_setTokenInHeader() {
+		this.requester.interceptors.request.use(
+			config => {
+				config.headers["x-auth-token"] = sessionStorage.getItem("token"); // may be undefined
+				return config;
+			},
+			error => {
+				return Promise.reject(error);
+			}
+		);
 	}
 
 	async postRegisterCredentials(email, password) {
@@ -19,12 +32,11 @@ class RequestManager {
 					}
 				}
 			);
-			// console.log({ data, status });
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				// console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
 			console.log(error.message);
 			return error.message;
@@ -32,7 +44,6 @@ class RequestManager {
 	}
 
 	async postLoginCredentials(email, password) {
-		console.log("postlogin");
 		try {
 			const response = await this.requester.post(
 				"/login",
@@ -45,24 +56,23 @@ class RequestManager {
 				}
 			);
 			const { data, status } = response;
-
-			this.requester.defaults.headers.common["x-auth-token"] =
-				response.headers["x-auth-token"];
-
-			console.log({ data, status });
+			sessionStorage.setItem("token", response.headers["x-auth-token"]);
+			this._setTokenInHeader();
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
-			// console.log(error.message);
 			return error.message;
 		}
 	}
 
 	logout() {
-		delete this.requester.defaults.headers.common["x-auth-token"];
+		// delete this.requester.defaults.headers.common["x-auth-token"];
+
+		sessionStorage.setItem("token", undefined);
+		this._setTokenInHeader();
 	}
 
 	async getNote(noteID) {
@@ -71,10 +81,9 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
-			console.log(error.message);
 			return error.message;
 		}
 	}
@@ -85,44 +94,44 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
 			console.log(error.message);
 			return error.message;
 		}
 	}
 
-	async postNote(color, message, title) {
+	async postNote(color, content, title) {
 		try {
 			const { data, status } = await this.requester.post(`/notes`, {
 				color,
-				message,
+				content,
 				title
 			});
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
 			console.log(error.message);
 			return error.message;
 		}
 	}
 
-	async putNote(noteID, color, message, title) {
+	async putNote(noteID, color, content, title) {
 		try {
 			const { data, status } = await this.requester.put(`/notes/${noteID}`, {
 				color,
-				message,
+				content,
 				title
 			});
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
 			console.log(error.message);
 			return error.message;
@@ -135,8 +144,8 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
-				console.log(error.response);
-				return error.response;
+				const { data, status } = error.response;
+				return { data, status };
 			}
 			console.log(error.message);
 			return error.message;
