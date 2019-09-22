@@ -1,10 +1,10 @@
 interface IUser extends Document {
-    email: string;
-    password: string;
-    accountVerificationToken: string;
-    isVerified: boolean;
-    passwordRecoveryToken?: string;
-    passwordRecoveryExpiration?: Date;
+	email: string;
+	password: string;
+	accountVerificationToken: string;
+	isVerified: boolean;
+	passwordRecoveryToken?: string;
+	passwordRecoveryExpiration?: Date;
 }
 
 /*
