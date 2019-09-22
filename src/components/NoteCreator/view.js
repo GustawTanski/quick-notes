@@ -11,6 +11,7 @@ export default class NoteCreatorView extends View {
 		this.noteBodyGroup = this._noteBodyDOMCreator();
 		this.noteColorSelectorGroup = this._noteColorSelectorDOMCreator();
 		this.noteButtonGroup = this._noteSubmitButtonDOMCreator();
+		this.postNoteFeedbackGroup = this._noteFeedbackGroupDOMCreator();
 
 		this.dropdownDiv = this._dropdownForm();
 
@@ -18,6 +19,7 @@ export default class NoteCreatorView extends View {
 		this.dropdownDiv.appendChild(this.noteBodyGroup);
 		this.dropdownDiv.appendChild(this.noteColorSelectorGroup);
 		this.dropdownDiv.appendChild(this.noteButtonGroup);
+		this.dropdownDiv.appendChild(this.postNoteFeedbackGroup);
 
 		this.children.push(this.dropdownDiv);
 	}
@@ -75,6 +77,32 @@ export default class NoteCreatorView extends View {
 		this.element.style.padding = "10px 20px";
 		this.element.style.borderRadius = "5px";
 		this.element.autocomplete = "off";
+	}
+
+	_noteFeedbackGroupDOMCreator() {
+		let container = document.createElement("div");
+		return container;
+	}
+
+	postNotePostingFeedback(success, message) {
+		let div = document.createElement("div");
+		div.classList.add("alert");
+		div.style.margin = "15px 0";
+		div.innerText = message;
+		div.setAttribute("role", "alert");
+
+		if (success) {
+			div.classList.add("alert-success");
+		} else {
+			div.classList.add("alert-danger");
+		}
+
+		this.postNoteFeedbackGroup.appendChild(div);
+		setTimeout(() => {
+			this.postNoteFeedbackGroup.removeChild(
+				this.postNoteFeedbackGroup.childNodes[0]
+			);
+		}, 3000);
 	}
 
 	_noteTitleDOMCreator() {

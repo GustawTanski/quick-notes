@@ -1,6 +1,7 @@
 import Controller from "../../utils/Controller";
 import View from "./view";
 import Model from "./model";
+import RequestManager from "../../utils/RequestManager";
 
 export default class NoteCreator extends Controller {
 	constructor(node, model) {
@@ -120,6 +121,18 @@ export default class NoteCreator extends Controller {
 
 		if (validation) {
 			// TODO send note
+			RequestManager.postNote(
+				this.model.color,
+				this.model.message,
+				this.model.title
+			)
+				.then(result => {
+					this.view.postNotePostingFeedback(true, "Succesfully added note!");
+				})
+				.catch(error => {
+					this.view.postNotePostingFeedback(false, error);
+				});
+			document.focus;
 		} else {
 			this.view.showFeedback(this.model);
 		}
@@ -140,6 +153,7 @@ export default class NoteCreator extends Controller {
 		this.view.dropdownDiv.style.maxHeight = `${this.view.dropdownDiv.scrollHeight}px`;
 		setTimeout(() => {
 			this.view.dropdownDiv.style.overflow = "unset";
+			this.view.dropdownDiv.style.maxHeight = "fit-content";
 		}, 350);
 	}
 	onFormFocusOut(event) {
