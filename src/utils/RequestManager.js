@@ -9,36 +9,54 @@ class RequestManager {
 
 	async postRegisterCredentials(email, password) {
 		try {
-			const { data, status } = await this.requester.post("/register",{},{
+			const { data, status } = await this.requester.post(
+				"/register",
+				{},
+				{
 					auth: {
 						username: email,
 						password
 					}
-				});
+				}
+			);
+			// console.log({ data, status });
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				// console.log(error.response);
 				return error.response;
 			}
+			console.log(error.message);
 			return error.message;
 		}
 	}
 
 	async postLoginCredentials(email, password) {
+		console.log("postlogin");
 		try {
-			const { data, status } = await this.requester.post("/login",{},{
+			const response = await this.requester.post(
+				"/login",
+				{},
+				{
 					auth: {
 						username: email,
 						password
 					}
-				});
+				}
+			);
+			const { data, status } = response;
+
 			this.requester.defaults.headers.common["x-auth-token"] =
 				response.headers["x-auth-token"];
+
+			console.log({ data, status });
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				console.log(error.response);
 				return error.response;
 			}
+			// console.log(error.message);
 			return error.message;
 		}
 	}
@@ -53,8 +71,10 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				console.log(error.response);
 				return error.response;
 			}
+			console.log(error.message);
 			return error.message;
 		}
 	}
@@ -65,8 +85,10 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				console.log(error.response);
 				return error.response;
 			}
+			console.log(error.message);
 			return error.message;
 		}
 	}
@@ -81,8 +103,10 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				console.log(error.response);
 				return error.response;
 			}
+			console.log(error.message);
 			return error.message;
 		}
 	}
@@ -97,8 +121,10 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				console.log(error.response);
 				return error.response;
 			}
+			console.log(error.message);
 			return error.message;
 		}
 	}
@@ -109,8 +135,10 @@ class RequestManager {
 			return { data, status };
 		} catch (error) {
 			if (error.response) {
+				console.log(error.response);
 				return error.response;
 			}
+			console.log(error.message);
 			return error.message;
 		}
 	}
