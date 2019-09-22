@@ -14,10 +14,7 @@ export default class NoteCreator extends Controller {
 	}
 
 	setListeners(event) {
-		this.view.element.addEventListener(
-			"submit",
-			this.submitFormEventListener.bind(this)
-		);
+		this.view.element.addEventListener("submit", this.onSubmitForm.bind(this));
 
 		this.view.element.querySelectorAll("option.btn").forEach(element => {
 			element.addEventListener("click", this.userSelectedNewColor.bind(this));
@@ -25,38 +22,23 @@ export default class NoteCreator extends Controller {
 
 		document
 			.querySelector("#" + this.view.noteTitleInputID)
-			.addEventListener(
-				"change",
-				this.onChangeUpdateModelEventListener.bind(this)
-			);
+			.addEventListener("change", this.onChangeUpdateModel.bind(this));
 
 		document
 			.querySelector("#" + this.view.noteTitleInputID)
-			.addEventListener(
-				"focus",
-				this.hideFeedbackOnFocusEventListener.bind(this)
-			);
+			.addEventListener("focus", this.onFocusHideFeedback.bind(this));
 
 		document
-			.querySelector("#" + this.view.noteMessageInputID)
-			.addEventListener(
-				"change",
-				this.onChangeUpdateModelEventListener.bind(this)
-			);
+			.querySelector("#" + this.view.noteContentInputID)
+			.addEventListener("change", this.onChangeUpdateModel.bind(this));
 
 		document
-			.querySelector("#" + this.view.noteMessageInputID)
-			.addEventListener(
-				"focus",
-				this.hideFeedbackOnFocusEventListener.bind(this)
-			);
+			.querySelector("#" + this.view.noteContentInputID)
+			.addEventListener("focus", this.onFocusHideFeedback.bind(this));
 
 		document
 			.querySelector("#" + this.view.formID)
-			.addEventListener(
-				"focus",
-				this.hideFeedbackOnFocusEventListener.bind(this)
-			);
+			.addEventListener("focus", this.onFocusHideFeedback.bind(this));
 
 		document
 			.querySelector("#" + this.view.noteTitleInputID)
@@ -74,15 +56,15 @@ export default class NoteCreator extends Controller {
 
 		document
 			.querySelector("#" + this.view.formID)
-			.removeEventListener("focus", this.hideFeedbackOnFocusEventListener);
+			.removeEventListener("focus", this.onFocusHideFeedback);
 
 		document
-			.querySelector("#" + this.view.noteMessageInputID)
-			.removeEventListener("focus", this.hideFeedbackOnFocusEventListener);
+			.querySelector("#" + this.view.noteContentInputID)
+			.removeEventListener("focus", this.onFocusHideFeedback);
 
 		document
 			.querySelector("#" + this.view.noteTitleInputID)
-			.removeChild("focus", this.hideFeedbackOnFocusEventListener);
+			.removeChild("focus", this.onFocusHideFeedback);
 
 		this.view.element.querySelectorAll("option.btn").forEach(element => {
 			element.removeEventListener("click", this.userSelectedNewColor);
@@ -90,47 +72,47 @@ export default class NoteCreator extends Controller {
 
 		document
 			.querySelector("#" + this.view.noteTitleInputID)
-			.removeEventListener("change", this.onChangeUpdateModelEventListener);
+			.removeEventListener("change", this.onChangeUpdateModel);
 
 		document
-			.querySelector("#" + this.view.noteMessageInputID)
-			.removeEventListener("change", this.onChangeUpdateModelEventListener);
+			.querySelector("#" + this.view.noteContentInputID)
+			.removeEventListener("change", this.onChangeUpdateModel);
 
-		this.view.element.removeEventListener(
-			"submit",
-			this.submitFormEventListener
-		);
+		this.view.element.removeEventListener("submit", this.onSubmitForm);
 	}
 
-	hideFeedbackOnFocusEventListener(event) {
+	onFocusHideFeedback(event) {
 		event.target.parentElement.lastChild.style.display = "none";
 	}
 
-	onChangeUpdateModelEventListener(event) {
+	onChangeUpdateModel(event) {
 		event.stopPropagation();
 		event.preventDefault();
 		const text = event.target.value;
 		this.model[`${event.target.name}`] = text;
 	}
 
-	submitFormEventListener(event) {
+	onSubmitForm(event) {
 		event.preventDefault();
 		this.view.hideFeedback();
 
 		let validation = this.model.validate();
 
 		if (validation) {
-			// TODO send note
 			RequestManager.postNote(
 				this.model.color,
-				this.model.message,
+				this.model.content,
 				this.model.title
 			)
 				.then(result => {
-					this.view.postNotePostingFeedback(true, "Succesfully added note!");
+					this.view.notePostingResultDiv(true, "Succesfully added note!");
 				})
 				.catch(error => {
-					this.view.postNotePostingFeedback(false, error);
+					console.log(error);
+					this.view.notePostingResultDiv(
+						false,
+						`${error.statusText}: ${error.data}`
+					);
 				});
 			document.focus;
 		} else {
@@ -139,12 +121,12 @@ export default class NoteCreator extends Controller {
 	}
 
 	userSelectedNewColor(event) {
-		let button = this.view.noteColorSelectorGroup.querySelector(
+		let dropdownButton = this.view.noteColorSelectorGroup.querySelector(
 			".dropdown-toggle"
 		);
 
-		button.style.backgroundColor = event.target.style.backgroundColor;
-		button.style.color = event.target.style.color;
+		dropdownButton.style.backgroundColor = event.target.style.backgroundColor;
+		dropdownButton.style.color = event.target.style.color;
 
 		this.model.color = event.target.value;
 	}
@@ -158,9 +140,9 @@ export default class NoteCreator extends Controller {
 	}
 	onFormFocusOut(event) {
 		if (!event.path.some(element => element == this.view.element)) {
+			this.view.dropdownDiv.style.overflow = "hidden";
 			this.view.dropdownDiv.style.maxHeight = `${this.view.noteTitleGroup
 				.scrollHeight + 10}px`;
-			this.view.dropdownDiv.style.overflow = "hidden";
 		}
 	}
 }

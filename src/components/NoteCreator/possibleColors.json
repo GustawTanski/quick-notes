@@ -11,13 +11,5 @@
 	"cyan",
 	"white",
 	"gray",
-	"gray-dark",
-	"primary",
-	"secondary",
-	"success",
-	"info",
-	"warning",
-	"danger",
-	"light",
-	"dark"
+	"gray-dark"
 ]

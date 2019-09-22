@@ -7,7 +7,7 @@ export default class NoteCreatorModel {
 		} else {
 			this._config = {
 				title: "",
-				message: "",
+				content: "",
 				color: ""
 			};
 		}
@@ -16,11 +16,7 @@ export default class NoteCreatorModel {
 	set configurationObject(config) {
 		if ("title" in config && "content" in config && "color" in config) {
 			if (possibleColor.some(color => color == config.color)) {
-				this._config = {
-					title: config.title,
-					message: config.content,
-					color: config.color
-				};
+				this._config = config;
 			} else {
 				throw TypeError("Invalid color value");
 			}
@@ -33,8 +29,8 @@ export default class NoteCreatorModel {
 		return this._config.title;
 	}
 
-	get message() {
-		return this._config.message;
+	get content() {
+		return this._config.content;
 	}
 
 	get color() {
@@ -49,9 +45,9 @@ export default class NoteCreatorModel {
 		}
 	}
 
-	set message(newMessage) {
-		if (typeof newMessage === "string") {
-			this._config.message = newMessage;
+	set content(newContent) {
+		if (typeof newContent === "string") {
+			this._config.content = newContent;
 		} else {
 			throw new TypeError("Title parameter must type of string");
 		}
@@ -68,7 +64,7 @@ export default class NoteCreatorModel {
 	validate() {
 		return (
 			this._config.title !== "" &&
-			this._config.message !== "" &&
+			this._config.content !== "" &&
 			this._config.color !== ""
 		);
 	}
