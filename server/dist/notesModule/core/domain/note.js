@@ -15,21 +15,29 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 var jf = __importStar(require("joiful"));
+var color_1 = __importDefault(require("./color"));
+var ts_enum_util_1 = require("ts-enum-util");
 var Note = /** @class */ (function () {
     /**
      * A cloning constructor that assigns all required atributes based on the object provided
      * @param base an object to be cloned
      */
-    function Note(base /*noteId:string|undefined,author:string|undefined,content:string|undefined*/) {
-        this.noteId = undefined;
-        this.authorId = "";
-        this.content = "";
+    function Note(base) {
+        var error = jf.validateAsClass(base, Note).error;
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
         this.noteId = base.noteId;
         this.authorId = base.authorId;
+        this.title = base.title;
         this.content = base.content;
+        this.color = base.color;
     }
     __decorate([
         jf.string(),
@@ -40,9 +48,17 @@ var Note = /** @class */ (function () {
         __metadata("design:type", String)
     ], Note.prototype, "authorId", void 0);
     __decorate([
+        jf.string().required().min(1),
+        __metadata("design:type", String)
+    ], Note.prototype, "title", void 0);
+    __decorate([
         jf.string().required().min(3),
         __metadata("design:type", String)
     ], Note.prototype, "content", void 0);
+    __decorate([
+        jf.string().required().valid(ts_enum_util_1.$enum(color_1.default).getKeys()),
+        __metadata("design:type", Object)
+    ], Note.prototype, "color", void 0);
     return Note;
 }());
 exports.default = Note;

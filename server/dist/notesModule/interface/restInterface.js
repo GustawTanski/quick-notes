@@ -41,14 +41,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var express_async_handler_1 = __importDefault(require("express-async-handler"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var newNoteDto_1 = __importDefault(require("./models/newNoteDto"));
 var joiful_1 = require("joiful");
 var noteDtoMapper_1 = __importDefault(require("./models/mappers/noteDtoMapper"));
+var auth_1 = __importDefault(require("../../middlewares/auth"));
 var RestInterface = /** @class */ (function () {
     function RestInterface(noteService) {
         var _this = this;
         this._router = express_1.default.Router();
         this._noteMapper = new noteDtoMapper_1.default();
+        this.router.use(auth_1.default);
         this.router.use(express_1.default.json());
         this.router.get('/notes', express_async_handler_1.default(function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
             var userId, notes;
@@ -93,19 +96,21 @@ var RestInterface = /** @class */ (function () {
             });
         }); }));
         this.router.post('/notes', express_async_handler_1.default(function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var noteDto, _a, error, value, newNote;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var noteDto, userId, error, newNote, noteResponse;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         noteDto = req.body;
-                        _a = joiful_1.validateAsClass(noteDto, newNoteDto_1.default), error = _a.error, value = _a.value;
+                        userId = this.extractUserId(req);
+                        error = joiful_1.validateAsClass(noteDto, newNoteDto_1.default).error;
                         if (!error) return [3 /*break*/, 1];
                         throw new Error(error.details[0].message);
-                    case 1: return [4 /*yield*/, noteService.saveNote(this._noteMapper.newNoteDtoToNote(req.body))];
+                    case 1: return [4 /*yield*/, noteService.saveNote(this._noteMapper.newNoteDtoToNote(noteDto, userId))];
                     case 2:
-                        newNote = _b.sent();
-                        res.status(200).send(newNote);
-                        _b.label = 3;
+                        newNote = _a.sent();
+                        noteResponse = this._noteMapper.noteToPersistedNoteDto(newNote);
+                        res.status(200).send(noteResponse);
+                        _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -143,7 +148,22 @@ var RestInterface = /** @class */ (function () {
         configurable: true
     });
     RestInterface.prototype.extractUserId = function (req) {
-        return "TestAuthor";
+        var jwtKey = process.env.JWT_SECRET;
+        if (!jwtKey) {
+            throw new Error("Server configuration error");
+        }
+        var userId;
+        var token = req.header("x-auth-token");
+        if (token && typeof token === "string") {
+            var decoded = jsonwebtoken_1.default.verify(token, jwtKey);
+            userId = decoded._id;
+        }
+        if (userId) {
+            return userId;
+        }
+        else {
+            throw new Error("Invalid authentication token, can't identify user");
+        }
     };
     return RestInterface;
 }());

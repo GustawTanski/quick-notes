@@ -20,8 +20,12 @@ var NoteMangooseModelMapper = /** @class */ (function () {
     function NoteMangooseModelMapper() {
         this.schema = new mongoose_1.Schema({}, { strict: false });
         this.NoteMongooseModel = mongoose_1.default.model("Note", this.schema);
-        automapper.createMap("Note", "MongooseNote").forMember("_id", function (opts) { opts.mapFrom('noteId'); });
-        automapper.createMap("MongooseNote", "Note").forMember("noteId", function (opts) { opts.mapFrom('_id'); });
+        automapper.createMap("Note", "MongooseNote")
+            .forMember("_id", function (opts) { opts.mapFrom('noteId'); });
+        automapper.createMap("MongooseNote", "Note")
+            .forMember("noteId", function (opts) { opts.mapFrom('_id'); })
+            .forMember("noteId", function (opts) { return String(opts.sourceObject[opts.sourcePropertyName]); })
+            .forMember("__v", function (opts) { opts.ignore(); });
     }
     NoteMangooseModelMapper.prototype.noteToMongooseModel = function (note) {
         var mangooseNote = automapper.map("Note", "MongooseNote", note);
@@ -29,6 +33,7 @@ var NoteMangooseModelMapper = /** @class */ (function () {
     };
     NoteMangooseModelMapper.prototype.mongooseModelToNote = function (mongooseModel) {
         var automapperOutput = automapper.map("MongooseNote", "Note", mongooseModel.toObject());
+        //automapperOutput.noteId = String(automapperOutput.noteId);
         return new note_1.default(automapperOutput);
     };
     return NoteMangooseModelMapper;

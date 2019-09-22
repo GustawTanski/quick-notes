@@ -13,13 +13,12 @@ var NoteDtoMapper = /** @class */ (function () {
         automapper.createMap("Note", "PersistedNoteDto").convertToType(persistedNoteDto_1.default);
     }
     NoteDtoMapper.prototype.noteToPersistedNoteDto = function (note) {
-        return automapper.map("Note", "NoteDto", note);
+        return automapper.map("Note", "PersistedNoteDto", note);
     };
-    NoteDtoMapper.prototype.newNoteDtoToNote = function (dto) {
-        return new note_1.default(automapper.map("NewNoteDto", "Note", dto));
-    };
-    NoteDtoMapper.prototype.persistedNoteDtoToNote = function (dto) {
-        return new note_1.default(automapper.map("PersistedNoteDto", "Note", dto));
+    NoteDtoMapper.prototype.newNoteDtoToNote = function (dto, authorId) {
+        var automapped = automapper.map("NewNoteDto", "Note", dto);
+        automapped.authorId = authorId;
+        return new note_1.default(automapped);
     };
     return NoteDtoMapper;
 }());

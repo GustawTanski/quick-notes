@@ -15,22 +15,32 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 var jf = __importStar(require("joiful"));
+var ts_enum_util_1 = require("ts-enum-util");
+var color_1 = __importDefault(require("../../core/domain/color"));
 var NewNoteDto = /** @class */ (function () {
     function NewNoteDto() {
-        this.authorId = "";
+        this.title = "";
         this.content = "";
+        this.color = undefined;
     }
     __decorate([
         jf.string().required().min(1),
         __metadata("design:type", String)
-    ], NewNoteDto.prototype, "authorId", void 0);
+    ], NewNoteDto.prototype, "title", void 0);
     __decorate([
         jf.string().required().min(3),
         __metadata("design:type", String)
     ], NewNoteDto.prototype, "content", void 0);
+    __decorate([
+        jf.string().required().valid(ts_enum_util_1.$enum(color_1.default).getKeys()),
+        __metadata("design:type", Object)
+    ], NewNoteDto.prototype, "color", void 0);
     return NewNoteDto;
 }());
 exports.default = NewNoteDto;
