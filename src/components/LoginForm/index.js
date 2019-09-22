@@ -54,7 +54,7 @@ export default class LoginForm extends Controller {
 						? this.view.showAlert(response.data)
 						: this.view.showAlert(response);
 				} else {
-					window.location.href = "http://quick-notes-253112.appspot.com/notes";
+					window.location.href = `${RequestManager.requester.defaults.baseURL}/notes`;
 				}
 			});
 		}
