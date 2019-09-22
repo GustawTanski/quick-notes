@@ -10,14 +10,20 @@ export default class NoteView extends View {
 		this.element.style.background = `var(--${config.color})`;
 
 		this.element.innerHTML = `
-            <div class="card-body">
-                <h5 class="card-title">${config.title}</h5>
+			<div class="card-header">
+				<span class="title-#Fsd3asd">${config.title}</span>
+				<button type="button" class="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="card-body">
                 <p class="card-text">${config.content}</p>
             </div>
         `;
 		//Note content
-		this.title = this.element.querySelector(".card-title");
+		this.title = this.element.querySelector(".title-#Fsd3asd");
 		this.content = this.element.querySelector(".card-text");
+		this.crossButton = this.element.querySelector(".close");
 	}
 }
 

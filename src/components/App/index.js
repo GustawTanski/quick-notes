@@ -1,16 +1,16 @@
 import Controller from "../../utils/Controller";
-import TopBar from "../TopBar";
-import SpinnerButton from "../SpinnerButton";
-import Router from "../Router";
 import Note from "../Note";
-import NoteCreator from "../NoteCreator/index";
 
 export default class App extends Controller {
 	constructor(node) {
 		super(node);
-		this.topBar = new TopBar(node);
-		this.spinner = new SpinnerButton(node);
-		// this.router = new Router(node);
-		this.noteCreator = new NoteCreator(node);
+		this.note = new Note(node, {
+			authorId: "Piesek",
+			noteId: "2342131",
+			title: "sint excepturi quis",
+			color: "blue",
+			content:
+				"Dolor omnis est fugiat consequatur dolores adipisci. Magnam numquam dolor nisi dolores maxime ut. Veritatis odit repellat dignissimos minus veniam necessitatibus voluptas dolor. Alias at eius hic quas."
+		});
 	}
 }

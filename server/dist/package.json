@@ -44,7 +44,8 @@
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemailer-smtp-transport": "^2.7.4",
     "pug": "^2.0.4",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "ts-enum-util": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",

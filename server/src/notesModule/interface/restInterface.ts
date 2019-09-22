@@ -15,8 +15,8 @@ export default class RestInterface{
         this._router = express.Router();
         this._noteMapper = new NoteDtoMapper();
 
-        this.router.use(auth);
-        this.router.use(express.json());
+        this.router.use('/notes', auth);
+        this.router.use('/notes', express.json());
 
         this.router.get('/notes', asyncHandler(async (req, res, next) => {
             let userId = this.extractUserId(req);
@@ -67,7 +67,7 @@ export default class RestInterface{
          * Error handler route.
          * TODO: throw better errors and handle them based on their type
          */
-        this.router.use((error: Error, req: Request, res: Response, next: NextFunction)=>{
+        this.router.use('/notes', (error: Error, req: Request, res: Response, next: NextFunction)=>{
             if (error) {
                 res.status(500).send(error.message);
             } else {
