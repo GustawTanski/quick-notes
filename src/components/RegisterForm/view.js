@@ -67,7 +67,7 @@ export default class RegisterFormView extends View {
 		alreadyRegistered.innerHTML = `
             <p class="mb-0">
                 Already registered?
-                <a href="#">Log in</a>
+                <a href="#/login">Log in</a>
 			</p>`;
 		this.loginLink = alreadyRegistered.querySelector("a");
 

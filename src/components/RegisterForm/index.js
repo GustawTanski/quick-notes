@@ -25,7 +25,6 @@ export default class RegisterForm extends Controller {
 
 	_updateModel(event) {
 		event.preventDefault();
-		console.log(this.model);
 		if (event.target === this.view.emailInput) {
 			this.model.email = event.target.value;
 			this.view.setEmailInputValue(this.model.email);
@@ -51,7 +50,6 @@ export default class RegisterForm extends Controller {
 
 	_register(event) {
 		event.preventDefault();
-		console.log("registration");
 		this.view.showPleaseWait();
 		RequestManager.postRegisterCredentials(
 			this.model.email,
