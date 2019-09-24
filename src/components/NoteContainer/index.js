@@ -12,11 +12,18 @@ export default class NoteContainer extends Controller {
 			this.view.noteCreatorContainer,
 			this.updateNotes
 		);
+		this.deleteNote = this.deleteNote.bind(this);
+		this.updateNotes();
+	}
+
+	deleteNote(id) {
+		this.model.deleteNote(id);
 		this.updateNotes();
 	}
 	updateNotes() {
+		this.view.clearNotes();
 		const currentNoteList = this.fetchNotes();
-		this.view.createNote(currentNoteList);
+		this.view.createNote(currentNoteList, this.deleteNote);
 	}
 	fetchNotes() {
 		const notes = this.model.fetchNotes();

@@ -13,18 +13,26 @@ export default class NoteContainerView extends View {
 		this.macyContainer.style.width = "90%";
 		this.macyContainer.style.margin = "auto";
 		this.macyContainer.style.marginTop = "50px";
-
 		const masonry = new Macy({
 			container: this.macyContainer,
 			columns: 6,
-			margin: { x: 10, y: 20 }
+			margin: { x: 10, y: 20 },
+			breakAt: {
+				1200: 5,
+				940: 3,
+				520: 2,
+				400: 1
+			}
 		});
 	}
-	createNote(notes) {
+	createNote(notes, callback) {
 		notes.map(note => {
-			const singleNote = new Note(this.element, note);
+			const singleNote = new Note(this.element, note, callback);
 			this.children.push(singleNote.view.element);
 		});
+	}
+	clearNotes() {
+		this.children = [];
 	}
 	render() {
 		if (!this._rendered) {

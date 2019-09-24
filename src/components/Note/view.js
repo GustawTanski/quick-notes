@@ -11,7 +11,7 @@ export default class NoteView extends View {
 
 		this.element.innerHTML = `
             <div class="card-body">
-                <h5 class="card-title">${config.title}</h5>
+                <h5 id=${config.index}class="card-title">${config.title}</h5>
                 <p class="card-text">${config.content}</p>
             </div>
         `;
