@@ -26,15 +26,14 @@ export default class Controller {
 			}
 		}
 	}
-
 	unmount() {
-		if (this.view instanceof View) this.node.removeChild(this.view.render());
-		this.removeListeners();
 		for (const i in this) {
 			if (this[i] instanceof Controller) {
 				this[i].unmount();
 			}
 		}
+		if (this.view instanceof View) this.view.render().remove();
+		this.removeListeners();
 	}
 
 	flatMount() {

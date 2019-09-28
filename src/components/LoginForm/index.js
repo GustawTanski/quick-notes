@@ -54,6 +54,7 @@ export default class LoginForm extends Controller {
 						: this.view.showAlert(response);
 				} else {
 					window.location.href = "#/notes";
+					history.pushState("", "notes", "/#/notes");
 				}
 				this.view.hidePleaseWait();
 			});

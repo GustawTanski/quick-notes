@@ -17,14 +17,10 @@ export default class Note extends Controller {
 	async _onCrossButtonClicked() {
 		const { config } = this.model;
 		if (await this.confirm.ask()) {
-			try {
-				const res = await RequestManager.deleteNote(
-					config.authorId,
-					config.noteId
-				);
+			const res = await RequestManager.deleteNote(config.noteId);
+			if (res.status == 200) {
 				if (typeof this._onDelete == "function") this._onDelete();
-				console.log("Deleted!");
-			} catch (error) {
+			} else {
 				alert("Something went wrong! Try again.");
 			}
 		}
