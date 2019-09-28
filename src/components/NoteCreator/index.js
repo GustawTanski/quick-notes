@@ -11,74 +11,83 @@ export default class NoteCreator extends Controller {
 		this.view = new View(this.model);
 		this.view.setViewValues(this.model);
 		this.onCreate = onCreate;
+		this.onSubmitForm = this.onSubmitForm.bind(this);
+		this.userSelectedNewColor = this.userSelectedNewColor.bind(this);
+		this.onChangeUpdateModel = this.onChangeUpdateModel.bind(this);
+		this.onFocusHideFeedback = this.onFocusHideFeedback.bind(this);
+		this.onChangeUpdateModel = this.onChangeUpdateModel.bind(this);
+		this.onFocusHideFeedback = this.onFocusHideFeedback.bind(this);
+		this.onFocusHideFeedback = this.onFocusHideFeedback.bind(this);
+		this.onTitleFocusIn = this.onTitleFocusIn.bind(this);
+		this.onFormFocusOut = this.onFormFocusOut.bind(this);
 	}
 
 	setListeners(event) {
-		this.view.element.addEventListener("submit", this.onSubmitForm.bind(this));
+		this.view.element.addEventListener("submit", this.onSubmitForm);
 
 		this.view.element.querySelectorAll("option.btn").forEach(element => {
-			element.addEventListener("click", this.userSelectedNewColor.bind(this));
+			element.addEventListener("click", this.userSelectedNewColor);
 		});
 
-		document
-			.querySelector("#" + this.view.noteTitleInputID)
-			.addEventListener("change", this.onChangeUpdateModel.bind(this));
+		this.view.noteTitleInput.addEventListener(
+			"change",
+			this.onChangeUpdateModel
+		);
 
-		document
-			.querySelector("#" + this.view.noteTitleInputID)
-			.addEventListener("focus", this.onFocusHideFeedback.bind(this));
+		this.view.noteTitleInput.addEventListener(
+			"focus",
+			this.onFocusHideFeedback
+		);
 
-		document
-			.querySelector("#" + this.view.noteContentInputID)
-			.addEventListener("change", this.onChangeUpdateModel.bind(this));
+		this.view.noteContentInput.addEventListener(
+			"change",
+			this.onChangeUpdateModel
+		);
 
-		document
-			.querySelector("#" + this.view.noteContentInputID)
-			.addEventListener("focus", this.onFocusHideFeedback.bind(this));
+		this.view.noteContentInput.addEventListener(
+			"focus",
+			this.onFocusHideFeedback
+		);
 
-		document
-			.querySelector("#" + this.view.formID)
-			.addEventListener("focus", this.onFocusHideFeedback.bind(this));
+		this.view.element.addEventListener("focus", this.onFocusHideFeedback);
 
-		document
-			.querySelector("#" + this.view.noteTitleInputID)
-			.addEventListener("focus", this.onTitleFocusIn.bind(this));
+		this.view.noteTitleInput.addEventListener("focus", this.onTitleFocusIn);
 
-		document.addEventListener("click", this.onFormFocusOut.bind(this));
+		document.addEventListener("click", this.onFormFocusOut);
 	}
 
 	removeListeners() {
-		document.removeEventListener("click", this.onFormFocusOut);
-
-		document
-			.querySelector("#" + this.view.noteTitleInputID)
-			.removeEventListener("focus", this.onTitleFocusIn);
-
-		document
-			.querySelector("#" + this.view.formID)
-			.removeEventListener("focus", this.onFocusHideFeedback);
-
-		document
-			.querySelector("#" + this.view.noteContentInputID)
-			.removeEventListener("focus", this.onFocusHideFeedback);
-
-		document
-			.querySelector("#" + this.view.noteTitleInputID)
-			.removeChild("focus", this.onFocusHideFeedback);
+		this.view.element.removeEventListener("submit", this.onSubmitForm);
 
 		this.view.element.querySelectorAll("option.btn").forEach(element => {
 			element.removeEventListener("click", this.userSelectedNewColor);
 		});
 
-		document
-			.querySelector("#" + this.view.noteTitleInputID)
-			.removeEventListener("change", this.onChangeUpdateModel);
+		this.view.noteTitleInput.removeEventListener(
+			"change",
+			this.onChangeUpdateModel
+		);
 
-		document
-			.querySelector("#" + this.view.noteContentInputID)
-			.removeEventListener("change", this.onChangeUpdateModel);
+		this.view.noteTitleInput.removeEventListener(
+			"focus",
+			this.onFocusHideFeedback
+		);
 
-		this.view.element.removeEventListener("submit", this.onSubmitForm);
+		this.view.noteContentInput.removeEventListener(
+			"change",
+			this.onChangeUpdateModel
+		);
+
+		this.view.noteContentInput.removeEventListener(
+			"focus",
+			this.onFocusHideFeedback
+		);
+
+		this.view.element.removeEventListener("focus", this.onFocusHideFeedback);
+
+		this.view.noteTitleInput.removeEventListener("focus", this.onTitleFocusIn);
+
+		document.removeEventListener("click", this.onFormFocusOut);
 	}
 
 	onFocusHideFeedback(event) {

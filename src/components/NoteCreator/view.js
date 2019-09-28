@@ -114,6 +114,7 @@ export default class NoteCreatorView extends View {
 		noteTitleInput.setAttribute("id", this.noteTitleInputID);
 		noteTitleInput.placeholder = "Your title here...";
 		noteTitleInput.name = "title";
+		this.noteTitleInput = noteTitleInput;
 
 		let titleValidationFeedback = document.createElement("div");
 		titleValidationFeedback.classList.add("invalid-feedback");
@@ -141,6 +142,7 @@ export default class NoteCreatorView extends View {
 		noteContentTextarea.placeholder = "Your note content...";
 		noteContentTextarea.required = false;
 		noteContentTextarea.name = "content";
+		this.noteContentInput = noteContentTextarea;
 
 		let noteContentValidationFeedback = document.createElement("div");
 		noteContentValidationFeedback.classList.add("invalid-feedback");

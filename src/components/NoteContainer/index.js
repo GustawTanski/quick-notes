@@ -3,6 +3,7 @@ import View from "./view";
 import Model from "./model";
 import NoteCreator from "../NoteCreator";
 import Note from "../Note";
+import LogOutButton from "../LogOutButton";
 
 export default class NoteContainer extends Controller {
 	constructor(node) {
@@ -13,8 +14,8 @@ export default class NoteContainer extends Controller {
 			this.view.noteCreatorContainer,
 			this.updateNotes.bind(this)
 		);
+		this.logOut = new LogOutButton(this.view.logOutContainer);
 		this.notes = [];
-		this.updateNotes();
 		this.deleteNote = this.deleteNote.bind(this);
 	}
 
@@ -63,11 +64,12 @@ export default class NoteContainer extends Controller {
 
 	mount() {
 		super.mount();
+		this.updateNotes();
 		this.mountNotes();
 	}
 
 	unmount() {
-		super.unmount();
 		this.unmountNotes();
+		super.unmount();
 	}
 }

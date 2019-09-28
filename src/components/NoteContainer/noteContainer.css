@@ -1,0 +1,28 @@
+.macy {
+    width: 90%;
+    margin: 50px auto auto;
+}
+
+.logOutContainer{
+    margin: 20px auto;
+    width: fit-content;
+}
+
+.noteCreator{
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media only screen and (min-width: 768px){
+    .noteCreator{
+        width: 70%;
+        margin-top: 10px;
+    }
+
+    .logOutContainer{
+        position: absolute;
+        margin: 0;
+        left: 20px;
+        top: 10px;
+    }
+}

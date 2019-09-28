@@ -1,5 +1,5 @@
 import Controller from "../../utils/Controller";
-import Model from "./Model";
+import Model from "./model";
 export default class Router extends Controller {
 	constructor(node) {
 		super(node);
@@ -37,7 +37,9 @@ export default class Router extends Controller {
 		window.addEventListener("hashchange", this.hrefHandler);
 	}
 	hrefHandler() {
-		let href = this.model.manageURL();
+		// debugger;
+		let href = this.model.manageURL(this.routes);
+		if (!href) return;
 		this.onRouteChange(href);
 	}
 	init() {

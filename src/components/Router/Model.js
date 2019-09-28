@@ -10,12 +10,29 @@ export default class RouterModel {
 		this.noteContainer = new NoteContainer(node);
 	}
 	setURL(newURL) {
+		location.href = `/#/${newURL}`;
 		history.pushState("", newURL, `/#/${newURL}`);
 	}
-	manageURL() {
+
+	handleLoggedState(href) {
+		const token = localStorage.getItem("token");
+		// debugger;
+		if (token) {
+			if (href == "login" || href == "register") {
+				this.setURL("notes");
+				return false;
+			}
+		} else if (href == "notes") {
+			this.setURL("login");
+			return false;
+		}
+		return true;
+	}
+
+	manageURL(routes) {
 		let href = window.location.href.split("#/")[1];
-		if (href == undefined) href = "login";
-		this.setURL(href);
-		return href;
+		if (href == undefined || !(href in routes)) href = "login";
+		if (this.handleLoggedState(href)) return href;
+		else return;
 	}
 }

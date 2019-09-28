@@ -11,7 +11,7 @@ class RequestManager {
 	_setTokenInHeader() {
 		this.requester.interceptors.request.use(
 			config => {
-				config.headers["x-auth-token"] = sessionStorage.getItem("token"); // may be undefined
+				config.headers["x-auth-token"] = localStorage.getItem("token"); // may be undefined
 				return config;
 			},
 			error => {
@@ -56,7 +56,7 @@ class RequestManager {
 				}
 			);
 			const { data, status } = response;
-			sessionStorage.setItem("token", response.headers["x-auth-token"]);
+			localStorage.setItem("token", response.headers["x-auth-token"]);
 			this._setTokenInHeader();
 			return { data, status };
 		} catch (error) {
@@ -70,8 +70,7 @@ class RequestManager {
 
 	logout() {
 		// delete this.requester.defaults.headers.common["x-auth-token"];
-
-		sessionStorage.setItem("token", undefined);
+		localStorage.removeItem("token");
 		this._setTokenInHeader();
 	}
 

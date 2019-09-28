@@ -18,10 +18,8 @@ export default class Note extends Controller {
 		const { config } = this.model;
 		if (await this.confirm.ask()) {
 			const res = await RequestManager.deleteNote(config.noteId);
-			console.log(res);
 			if (res.status == 200) {
 				if (typeof this._onDelete == "function") this._onDelete();
-				console.log("Deleted!");
 			} else {
 				alert("Something went wrong! Try again.");
 			}

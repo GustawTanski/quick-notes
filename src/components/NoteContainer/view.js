@@ -1,18 +1,20 @@
 import View from "../../utils/View";
-import Note from "../Note";
 import Macy from "macy";
+import "./noteContainer.css";
+
 export default class NoteContainerView extends View {
 	constructor() {
 		super();
 		this.element = document.createElement("div");
-		this.element.innerHTML = `<div class="noteCreator"></div>
-    <div class="macy"></div>`;
+		this.element.innerHTML = `
+			<div class="logOutContainer"></div>
+			<div class="noteCreator"></div>
+			<div class="macy"></div>
+		`;
 		this.noteCreatorContainer = this.element.querySelector(".noteCreator");
+		this.logOutContainer = this.element.querySelector(".logOutContainer");
 		this.macyContainer = this.element.querySelector(".macy");
 
-		this.macyContainer.style.width = "90%";
-		this.macyContainer.style.margin = "auto";
-		this.macyContainer.style.marginTop = "50px";
 		this.masonry = new Macy({
 			container: this.macyContainer,
 			columns: 6,
