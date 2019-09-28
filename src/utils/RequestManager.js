@@ -3,7 +3,7 @@ import axios from "axios";
 class RequestManager {
 	constructor() {
 		this.requester = axios.create({
-			baseURL: "http://quick-notes-253112.appspot.com"
+			baseURL: "https://quick-notes-253112.appspot.com"
 		});
 		this._setTokenInHeader();
 	}
