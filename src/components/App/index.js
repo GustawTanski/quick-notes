@@ -1,5 +1,5 @@
 import Controller from "../../utils/Controller";
-import Note from "../Note";
+import NoteContainer from "../NoteContainer";
 
 export default class App extends Controller {
 	constructor(node) {
