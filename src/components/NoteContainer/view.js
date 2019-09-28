@@ -25,15 +25,7 @@ export default class NoteContainerView extends View {
 			}
 		});
 	}
-	createNote(notes, callback) {
-		notes.map(note => {
-			const singleNote = new Note(this.element, note, callback);
-			this.children.push(singleNote.view.element);
-		});
-	}
-	clearNotes() {
-		this.children = [];
-	}
+
 	render() {
 		if (!this._rendered) {
 			this.children.forEach(child => this.macyContainer.appendChild(child));

@@ -4,16 +4,17 @@ import Model from "./model";
 import RequestManager from "../../utils/RequestManager";
 
 export default class NoteCreator extends Controller {
-	constructor(node, model) {
+	constructor(node, onCreate) {
 		super(node);
 
-		this.model = new Model(model);
+		this.model = new Model();
 		this.view = new View(this.model);
-
 		this.view.setViewValues(this.model);
+		this.onCreate = onCreate;
 	}
 
 	setListeners(event) {
+		debugger;
 		this.view.element.addEventListener("submit", this.onSubmitForm.bind(this));
 
 		this.view.element.querySelectorAll("option.btn").forEach(element => {
@@ -94,6 +95,7 @@ export default class NoteCreator extends Controller {
 
 	onSubmitForm(event) {
 		event.preventDefault();
+		debugger;
 		this.view.hideFeedback();
 
 		let validation = this.model.validate();
@@ -107,6 +109,7 @@ export default class NoteCreator extends Controller {
 				.then(result => {
 					if (result.status === 200) {
 						this.view.notePostingResultDiv(true, "Succesfully added note!");
+						this.onCreate();
 					} else {
 						this.view.notePostingResultDiv(false, result.data);
 					}

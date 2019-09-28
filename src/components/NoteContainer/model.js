@@ -4,13 +4,10 @@ export default class NoteContainerModel {
 	constructor() {
 		this.notes = [];
 	}
-	deleteNote(id) {
-		const newNotes = this.notes.filter(note => note.noteId !== id);
-		this.notes = newNotes;
-	}
-	fetchNotes() {
-		const notes = RequestManager.getNotes();
-		this.notes = [...notes];
+	async fetchNotes() {
+		const response = await RequestManager.getNotes();
+		console.log(response);
+		if (response.status == 200) this.notes = [...response.data];
 		return this.notes;
 	}
 }

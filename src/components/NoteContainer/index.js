@@ -2,6 +2,7 @@ import Controller from "../../utils/Controller";
 import View from "./view";
 import Model from "./model";
 import NoteCreator from "../NoteCreator";
+import Note from "../Note";
 
 export default class NoteContainer extends Controller {
 	constructor(node) {
@@ -10,23 +11,62 @@ export default class NoteContainer extends Controller {
 		this.view = new View();
 		this.noteCreator = new NoteCreator(
 			this.view.noteCreatorContainer,
-			this.updateNotes
+			this.updateNotes.bind(this)
 		);
-		this.deleteNote = this.deleteNote.bind(this);
+		this.notes = [];
 		this.updateNotes();
+		this.deleteNote = this.deleteNote.bind(this);
 	}
 
 	deleteNote(id) {
-		this.model.deleteNote(id);
 		this.updateNotes();
 	}
-	updateNotes() {
-		this.view.clearNotes();
-		const currentNoteList = this.fetchNotes();
-		this.view.createNote(currentNoteList, this.deleteNote);
+
+	setNotes(notes) {
+		this.notes = notes.map(
+			note => new Note(this.view.macyContainer, note, this.deleteNote)
+		);
+	}
+
+	clearNotes() {
+		this.unmountNotes();
+		this.notes = [];
+	}
+
+	initNotes() {
+		this.notes.forEach(note => note.init());
+	}
+
+	mountNotes() {
+		this.notes.forEach(note => note.mount());
+	}
+
+	unmountNotes() {
+		this.notes.forEach(note => note.unmount());
+	}
+
+	async updateNotes() {
+		this.clearNotes();
+		const currentNoteList = await this.fetchNotes();
+		this.setNotes(currentNoteList);
+		this.initNotes();
 	}
 	fetchNotes() {
-		const notes = this.model.fetchNotes();
-		return notes;
+		return this.model.fetchNotes();
+	}
+
+	init() {
+		super.init();
+		this.initNotes();
+	}
+
+	mount() {
+		super.mount();
+		this.mountNotes();
+	}
+
+	unmount() {
+		super.unmount();
+		this.unmountNotes();
 	}
 }

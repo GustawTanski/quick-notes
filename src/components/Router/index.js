@@ -10,7 +10,7 @@ export default class Router extends Controller {
 		this.routes = {
 			login: this.model.login,
 			register: this.model.register,
-			noteCreator: this.model.noteCreator
+			notes: this.model.notes
 		};
 		this.currentRoute = null;
 		this.hrefHandler();
