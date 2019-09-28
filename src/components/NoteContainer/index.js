@@ -18,7 +18,7 @@ export default class NoteContainer extends Controller {
 		this.deleteNote = this.deleteNote.bind(this);
 	}
 
-	deleteNote(id) {
+	deleteNote() {
 		this.updateNotes();
 	}
 
@@ -50,6 +50,7 @@ export default class NoteContainer extends Controller {
 		const currentNoteList = await this.fetchNotes();
 		this.setNotes(currentNoteList);
 		this.initNotes();
+		this.view.masonry.reInit();
 	}
 	fetchNotes() {
 		return this.model.fetchNotes();

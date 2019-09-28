@@ -12,7 +12,6 @@ export default class Router extends Controller {
 			notes: this.model.noteContainer
 		};
 		this.currentRoute = null;
-		this.hrefHandler();
 	}
 	onRouteChange(route) {
 		if (typeof route != "string") {
@@ -40,5 +39,9 @@ export default class Router extends Controller {
 	hrefHandler() {
 		let href = this.model.manageURL();
 		this.onRouteChange(href);
+	}
+	init() {
+		super.init();
+		this.hrefHandler();
 	}
 }

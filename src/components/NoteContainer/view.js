@@ -13,7 +13,7 @@ export default class NoteContainerView extends View {
 		this.macyContainer.style.width = "90%";
 		this.macyContainer.style.margin = "auto";
 		this.macyContainer.style.marginTop = "50px";
-		const masonry = new Macy({
+		this.masonry = new Macy({
 			container: this.macyContainer,
 			columns: 6,
 			margin: { x: 10, y: 20 },

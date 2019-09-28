@@ -14,7 +14,6 @@ export default class NoteCreator extends Controller {
 	}
 
 	setListeners(event) {
-		debugger;
 		this.view.element.addEventListener("submit", this.onSubmitForm.bind(this));
 
 		this.view.element.querySelectorAll("option.btn").forEach(element => {
@@ -95,7 +94,6 @@ export default class NoteCreator extends Controller {
 
 	onSubmitForm(event) {
 		event.preventDefault();
-		debugger;
 		this.view.hideFeedback();
 
 		let validation = this.model.validate();
