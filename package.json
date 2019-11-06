@@ -47,7 +47,7 @@
     "jquery": "^3.4.1",
     "jsonwebtoken": "^8.5.1",
     "macy": "^2.5.0",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.5",
     "nodemailer": "^6.3.0",
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemailer-smtp-transport": "^2.7.4",
