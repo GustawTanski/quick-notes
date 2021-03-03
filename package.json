@@ -52,7 +52,7 @@
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemailer-smtp-transport": "^2.7.4",
     "popper.js": "^1.15.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "reflect-metadata": "^0.1.13",
     "ts-enum-util": "^4.0.1",
     "typescript": "^3.6.3"
